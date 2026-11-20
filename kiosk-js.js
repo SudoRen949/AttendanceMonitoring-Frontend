@@ -7,6 +7,8 @@ let selectedSection, selectedSubject;
 
 const url = "https://amsys-3.vercel.app/api";
 
+console.log("Hello World");
+
 const QRBox = document.getElementById("qrBox");
 const recordsList = document.getElementById("recordsList");
 const scheduleList = document.getElementById("scheduleList");
