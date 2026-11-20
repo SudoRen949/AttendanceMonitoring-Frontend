@@ -37,14 +37,14 @@ async function updateAttendanceRecords()
 	if ( result.status != 200 ) return;
 	const data = await result.text();
 	let recordsLength = 0;
-	recordsList.innerHTML = null;
+	// recordsList.innerHTML = null;
 	recordListUnformatted = "";
 	if ( Object.keys(data).length > 0 ) {
 		const newData = data.split(',');
 		for ( var d of newData ) {
 			const dat = d.split('-');
 			const dl = dat.length;
-			recordsList.innerHTML += `
+			previousRecordList += `
 				<tr>
 					<td>${ dat[0] }</td>
 					<td>${ dat[1] }</td>
@@ -64,7 +64,7 @@ async function updateAttendanceRecords()
 			}
 		}
 	}
-	previousRecordList = recordsList.innerHTML;
+	// previousRecordList = recordsList.innerHTML;
 	attendanceRecords.innerText = recordsLength;
 }
 
