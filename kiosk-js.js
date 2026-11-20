@@ -32,7 +32,7 @@ async function updateAttendanceRecords()
 {
 	if ( subjectSelect.value == "null" ) return;
 	recordsList.innerHTML = previousRecordList;
-	previousRecordList = null;
+	previousRecordList = "";
 	const result = await fetch(`${ url }/zAttendance/${ studentAttendanceDate.value }/${ sectionSelect.value }/${ subjectSelect.value }`);
 	if ( result.status != 200 ) return;
 	const data = await result.text();
@@ -63,6 +63,18 @@ async function updateAttendanceRecords()
 				recordListUnformatted += ',';
 			}
 		}
+	}
+	// Change QR information
+	const response1 = await fetch(`${ url }/zQRInformation`);
+	if ( response1.status != 200 ) return;
+	const data1 = await response1.text();
+	if ( data1.length > 0 ) {
+		recordListUnformatted = '';
+		const response2 = await fetch(`${ url }/zQRInformation`, {
+			method: "PUT",
+			headers: { "Content-Type": "text/plain" },
+			body: recordListUnformatted
+		});
 	}
 	// previousRecordList = recordsList.innerHTML;
 	attendanceRecords.innerText = recordsLength;
@@ -119,7 +131,7 @@ async function generateQRCode()
 		document.getElementById("qrBox").innerHTML = data;
 		await fetch(`${ url }/zQRInformation`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/text" },
+			headers: { "Content-Type": "text/plain" },
 			body: recordListUnformatted
 		});
 	}
