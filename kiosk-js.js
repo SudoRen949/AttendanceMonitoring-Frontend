@@ -64,18 +64,6 @@ async function updateAttendanceRecords()
 			}
 		}
 	}
-	// Change QR information
-	const response1 = await fetch(`${ url }/zQRInformation`);
-	if ( response1.status != 200 ) return;
-	const data1 = await response1.text();
-	if ( data1.length > 0 ) {
-		recordListUnformatted = '';
-		const response2 = await fetch(`${ url }/zQRInformation`, {
-			method: "PUT",
-			headers: { "Content-Type": "text/plain" },
-			body: recordListUnformatted
-		});
-	}
 	// previousRecordList = recordsList.innerHTML;
 	attendanceRecords.innerText = recordsLength;
 }
@@ -164,8 +152,20 @@ sectionSelect.addEventListener("change", () =>
 
 subjectSelect.addEventListener("change", () =>
 {
-	//clearQRInformation();
+	// clearQRInformation();
 	QRBox.innerHTML = "QR code will appear here";
+	// Change QR information
+	const response1 = await fetch(`${ url }/zQRInformation`);
+	if ( response1.status != 200 ) return;
+	const data1 = await response1.text();
+	if ( data1.length > 0 ) {
+		recordListUnformatted = '';
+		const response2 = await fetch(`${ url }/zQRInformation`, {
+			method: "PUT",
+			headers: { "Content-Type": "text/plain" },
+			body: recordListUnformatted
+		});
+	}
 });
 
 studentAttendanceDate.addEventListener("change", () =>
