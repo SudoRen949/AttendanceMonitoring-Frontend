@@ -28,7 +28,7 @@ function updateDateAndTime()
 	attendanceDate.innerText = new Date().toDateString();
 }
 
-async function updateAttendanceRecords()
+async function updateAttendanceRecords(date)
 {
 	if ( subjectSelect.value == "null" ) return;
 	recordsList.innerHTML = previousRecordList;
@@ -116,7 +116,7 @@ async function generateQRCode()
 	if ( response.status != 200 ) return;
 	const data = await response.text();
 	if ( data.length != 0 ) {
-		document.getElementById("qrBox").innerHTML = data;
+		QRBox.innerHTML = data;
 		await fetch(`${ url }/zQRInformation`, {
 			method: "PUT",
 			headers: { "Content-Type": "text/plain" },
@@ -143,47 +143,50 @@ async function changeQRInformation()
 
 sectionSelect.addEventListener("change", () =>
 {
-	//clearQRInformation();
 	updateScheduleList();
 	sectionSelected.innerText = sectionSelect.value;
 });
 
 subjectSelect.addEventListener("change", () =>
 {
-	changeQRInformation();
 	QRBox.innerHTML = "QR code will appear here";
-});
-
-studentAttendanceDate.addEventListener("change", () =>
-{
-	//clearQRInformation();
-	QRBox.innerHTML = "QR code will appear here";
-});
-
-updateScheduleList();
-
-setInterval(() =>
-{
-	updateDateAndTime();
-	updateAttendanceRecords();
 	if ( sectionSelect.value != "null" && 
 		 subjectSelect.value != "null" && 
 		 scheduleList.textContent != "" &&
 		 recordsList.textContent != "" )
 	{
+		changeQRInformation();
 		generateQRCode();
 	}
-}, 1500);
+});
 
+studentAttendanceDate.addEventListener("change", () =>
+{
+	QRBox.innerHTML = "QR code will appear here";
+	if ( sectionSelect.value != "null" && 
+		 subjectSelect.value != "null" && 
+		 scheduleList.textContent != "" &&
+		 recordsList.textContent != "" )
+	{
+		changeQRInformation();
+		generateQRCode();
+	}
+});
+
+// Shows realtime student record and system date and time.
+// it has a delay of 2 seconds to give it a time to populate the firebase database and receive data.
 setInterval(() =>
 {
-	//clearQRInformation();
+	updateDateAndTime();
+	updateAttendanceRecords();
+}, 2000);
+
+// Deletes previous attendance ( necessary to prevent unused data to be stuck )
+setInterval(() =>
+{
 	const yesterdayDate = new Date();
 	yesterdayDate.setDate(yesterdayDate.getDate() - 1);
 	const previousDate = new Date(yesterdayDate.getTime() - yesterdayDate.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-	fetch(`${ url }/zAttendance/${ previousDate }`, {
-		method: "DELETE",
-		headers: { "Content-Type": "application/text" }
-	})
-}, 60000);
+	fetch(`${ url }/zAttendance/${ previousDate }`, { method: "DELETE" })
+}, 600000);
 
