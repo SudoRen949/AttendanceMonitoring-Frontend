@@ -154,7 +154,7 @@ async function changeQRInformation()
 sectionSelect.addEventListener("change", () =>
 {
 	updateScheduleList();
-	sectionSelected.innerText = sectionSelect.value;
+	sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
 });
 
 subjectSelect.addEventListener("change", () =>
