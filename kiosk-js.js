@@ -4,7 +4,6 @@ let previousRecordList = null;
 let recordListUnformatted = "";
 let randomNumber = 0;
 let selectedSection, selectedSubject;
-let recordsLength = 0;
 
 const url = "https://amsys-3.vercel.app/api";
 
@@ -31,14 +30,20 @@ function updateDateAndTime()
 
 async function updateAttendanceRecords()
 {
-	recordsLength = 0;
-	if ( subjectSelect.value == "null" ) return;
+	if ( subjectSelect.value == "null" ) {
+		attendanceRecords.innerText = "0";
+		return;
+	}
 	recordsList.innerHTML = previousRecordList;
 	previousRecordList = "";
 	const result = await fetch(`${ url }/zAttendance/${ studentAttendanceDate.value }/${ sectionSelect.value }/${ subjectSelect.value }`);
-	if ( result.status != 200 ) return;
+	if ( result.status != 200 ) {
+		attendanceRecords.innerText = "0";
+		return;
+	}
 	const data = await result.text();
 	recordListUnformatted = "";
+	let recordsLength = 0;
 	if ( Object.keys(data).length > 0 ) {
 		const newData = data.split(',');
 		for ( var d of newData ) {
@@ -65,6 +70,7 @@ async function updateAttendanceRecords()
 		}
 	}
 	// previousRecordList = recordsList.innerHTML;
+	attendanceRecords.innerText = recordsLength;
 }
 
 async function updateScheduleList()
@@ -164,7 +170,6 @@ setInterval(() =>
 {
 	updateDateAndTime();
 	updateAttendanceRecords();
-	attendanceRecords.innerText = recordsLength;
 	if ( sectionSelect.value != "null" && 
 		 subjectSelect.value != "null" && 
 		 scheduleList.textContent != "" &&
