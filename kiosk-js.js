@@ -149,11 +149,13 @@ sectionSelect.addEventListener("change", () =>
 
 subjectSelect.addEventListener("change", () =>
 {
+	changeQRInformation();
 	QRBox.innerHTML = "QR code will appear here";
 });
 
 studentAttendanceDate.addEventListener("change", () =>
 {
+	changeQRInformation();
 	QRBox.innerHTML = "QR code will appear here";
 });
 
@@ -168,7 +170,6 @@ setInterval(() =>
 		 scheduleList.textContent != "" &&
 		 recordsList.textContent != "" )
 	{
-		changeQRInformation();
 		generateQRCode();
 	}
 }, 2000);
