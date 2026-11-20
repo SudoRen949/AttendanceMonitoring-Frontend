@@ -126,35 +126,8 @@ async function generateQRCode()
 	recordListUnformatted = "";
 }
 
-/*
-	async function clearQRInformation()
-	{
-		const response1 = await fetch(`${ url }/zQRInformation`);
-		if ( response1.status != 200 ) return;
-		const data1 = await response1.text();
-		if ( data1.length > 0 ) {
-			recordListUnformatted = '';
-			const response2 = await fetch(`${ url }/zQRInformation`, {
-				method: "PUT",
-				headers: { "Content-Type": "application/text" },
-				body: ""
-			});
-		}
-	}
-*/
-
-sectionSelect.addEventListener("change", () =>
+async function changeQRInformation()
 {
-	//clearQRInformation();
-	updateScheduleList();
-	sectionSelected.innerText = sectionSelect.value;
-});
-
-subjectSelect.addEventListener("change", () =>
-{
-	// clearQRInformation();
-	QRBox.innerHTML = "QR code will appear here";
-	// Change QR information
 	const response1 = await fetch(`${ url }/zQRInformation`);
 	if ( response1.status != 200 ) return;
 	const data1 = await response1.text();
@@ -166,6 +139,19 @@ subjectSelect.addEventListener("change", () =>
 			body: recordListUnformatted
 		});
 	}
+}
+
+sectionSelect.addEventListener("change", () =>
+{
+	//clearQRInformation();
+	updateScheduleList();
+	sectionSelected.innerText = sectionSelect.value;
+});
+
+subjectSelect.addEventListener("change", () =>
+{
+	changeQRInformation();
+	QRBox.innerHTML = "QR code will appear here";
 });
 
 studentAttendanceDate.addEventListener("change", () =>
