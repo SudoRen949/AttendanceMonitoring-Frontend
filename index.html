@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Class Attendance</title>
+		<link rel="stylesheet" type="text/css" href="kiosk-css.css">
+		<script src="kiosk-js.js" defer></script>
+	</head>
+	<body>
+		<div>
+			<main>
+				<header>
+					<div>
+						<h1>Attendance Dashboard</h1>
+						<p>View class schedules and student attendance</p>
+					</div>
+					<div class="user-badge">Teacher view</div>
+				</header>
+
+				<div class="content">
+					<section class="summary">
+						<div class="card">
+							<div class="card-label">Selected section</div>
+							<div id="sectionSelected" class="card-value"></div>
+							<div class="card-note">Current class group</div>
+						</div>
+						<div class="card">
+							<div class="card-label">Attendance records</div>
+							<div id="attendanceRecords" class="card-value">0</div>
+							<div class="card-note">For the selected date and section</div>
+						</div>
+							<div class="card">
+							<div class="card-label">Date</div>
+							<div id="attendanceDate" class="card-value" style="font-size:20px"></div>
+							<div class="card-note">Attendance date</div>
+						</div>
+					</section>
+
+					<div class="columns">
+						<section class="panel">
+							<div class="panel-heading">
+								<h2>Class schedule</h2>
+								<div class="filters">
+									<select aria-label="Select course">
+										<option>Computer Engineering</option>
+									</select>
+									<select aria-label="Select year">
+										<option>4th Year</option>
+									</select>
+									<select id="sectionSelect" aria-label="Select section">
+										<option value="null" selected>--</option>
+										<option value="4A">Section 4A</option>
+										<option value="4B">Section 4B</option>
+										<option value="4C">Section 4C</option>
+									</select>
+									<div class="filters">
+										<select id="subjectSelect" aria-label="Select subject" style="width:100%">
+											<option value="null" selected>--</option>
+											<option value="CPE412">CPE412</option>
+											<option value="CPE413">CPE413</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div id="scheduleList" class="schedule-list">
+									<!-- <div class="schedule-item">
+										<div><strong>CPE412</strong><small>Room 303</small></div>
+										<div class="schedule-time">Monday · 4:00 PM–7:00 PM<br>Wednesday · 1:00 PM–4:00 PM</div>
+									</div> -->
+									<!-- <div class="schedule-item">
+										<div><strong>CPE413</strong><small>Room 402</small></div>
+										<div class="schedule-time">Monday · 10:00 AM–1:00 PM<br>Friday · 1:00 PM–4:00 PM</div>
+									</div>
+									<div class="schedule-item">
+										<div><strong>CPE414</strong><small>Room —</small></div>
+										<div class="schedule-time">Schedule not set</div>
+									</div>
+									<div class="schedule-item">
+										<div><strong>CPE415</strong><small>Room —</small></div>
+										<div class="schedule-time">Tuesday · 1:00 PM–4:00 PM</div>
+									</div>
+									<div class="schedule-item">
+										<div><strong>EC411</strong><small>Room —</small></div>
+										<div class="schedule-time">Thursday · 4:00 PM–7:00 PM</div>
+									</div> -->
+								</div>
+							</div>
+						</section>
+
+						<section class="panel">
+							<div class="panel-heading">
+								<h2>Share attendance view</h2>
+							</div>
+							<div class="panel-body">
+								<div id="qrBox" class="qr-box">
+									QR code will appear here
+								</div>
+								<p class="qr-help">
+									<!-- Select a section and subject, then generate a QR code for the teacher to scan. -->
+									QR will automatically generate.
+								</p>
+							</div>
+						</section>
+					</div>
+
+					<section class="panel attendance-panel">
+						<div class="panel-heading">
+							<h2>Student attendance</h2>
+							<div class="filters">
+								<input id="studentAttendanceDate" type="date" aria-label="Filter by date">
+								<input type="search" placeholder="Search student or ID" aria-label="Search attendance">
+							</div>
+						</div>
+						<div class="table-wrap">
+							<table>
+								<thead>
+									<tr>
+										<th>Student</th>
+										<th>School ID</th>
+										<th>Section</th>
+										<th>Subject</th>
+										<th>Time in</th>
+										<th>Time out</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody id="recordsList">
+									<!-- <tr>
+										<td>Juan Dela Cruz</td>
+										<td>2023306123</td>
+										<td>4C</td>
+										<td>CPE413</td>
+										<td>10:00 AM</td>
+										<td>1:00 PM</td>
+										<td><span class="status">Complete</span></td>
+									</tr> -->
+									<!-- <tr>
+										<td>Maria Santos</td>
+										<td>2023306456</td>
+										<td>4C</td>
+										<td>CPE413</td>
+										<td>10:07 AM</td>
+										<td>—</td>
+										<td><span class="status open">Time-out pending</span></td>
+									</tr>
+									<tr>
+										<td>Alex Reyes</td>
+										<td>2023306789</td>
+										<td>4C</td>
+										<td>CPE413</td>
+										<td>9:58 AM</td>
+										<td>1:02 PM</td>
+										<td><span class="status">Complete</span></td>
+									</tr> -->
+								</tbody>
+							</table>
+						</div>
+					</section>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>
+
