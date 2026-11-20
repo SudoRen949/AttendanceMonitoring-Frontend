@@ -4,6 +4,7 @@ let previousRecordList = null;
 let recordListUnformatted = "";
 let randomNumber = 0;
 let selectedSection, selectedSubject;
+let recordsLength = 0;
 
 const url = "https://amsys-3.vercel.app/api";
 
@@ -30,7 +31,7 @@ function updateDateAndTime()
 
 async function updateAttendanceRecords()
 {
-	let recordsLength = 0;
+	recordsLength = 0;
 	if ( subjectSelect.value == "null" ) return;
 	recordsList.innerHTML = previousRecordList;
 	previousRecordList = "";
@@ -64,7 +65,6 @@ async function updateAttendanceRecords()
 		}
 	}
 	// previousRecordList = recordsList.innerHTML;
-	attendanceRecords.innerText = recordsLength;
 }
 
 async function updateScheduleList()
@@ -164,6 +164,7 @@ setInterval(() =>
 {
 	updateDateAndTime();
 	updateAttendanceRecords();
+	attendanceRecords.innerText = recordsLength;
 	if ( sectionSelect.value != "null" && 
 		 subjectSelect.value != "null" && 
 		 scheduleList.textContent != "" &&
