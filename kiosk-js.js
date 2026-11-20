@@ -28,7 +28,7 @@ function updateDateAndTime()
 	attendanceDate.innerText = new Date().toDateString();
 }
 
-async function updateAttendanceRecords(date)
+async function updateAttendanceRecords()
 {
 	if ( subjectSelect.value == "null" ) return;
 	recordsList.innerHTML = previousRecordList;
@@ -150,27 +150,11 @@ sectionSelect.addEventListener("change", () =>
 subjectSelect.addEventListener("change", () =>
 {
 	QRBox.innerHTML = "QR code will appear here";
-	if ( sectionSelect.value != "null" && 
-		 subjectSelect.value != "null" && 
-		 scheduleList.textContent != "" &&
-		 recordsList.textContent != "" )
-	{
-		changeQRInformation();
-		generateQRCode();
-	}
 });
 
 studentAttendanceDate.addEventListener("change", () =>
 {
 	QRBox.innerHTML = "QR code will appear here";
-	if ( sectionSelect.value != "null" && 
-		 subjectSelect.value != "null" && 
-		 scheduleList.textContent != "" &&
-		 recordsList.textContent != "" )
-	{
-		changeQRInformation();
-		generateQRCode();
-	}
 });
 
 // Shows realtime student record and system date and time.
@@ -179,13 +163,22 @@ setInterval(() =>
 {
 	updateDateAndTime();
 	updateAttendanceRecords();
+	if ( sectionSelect.value != "null" && 
+		 subjectSelect.value != "null" && 
+		 scheduleList.textContent != "" &&
+		 recordsList.textContent != "" )
+	{
+		changeQRInformation();
+		generateQRCode();
+	}
 }, 2000);
 
 // Deletes previous attendance ( necessary to prevent unused data to be stuck )
 setInterval(() =>
 {
-	const yesterdayDate = new Date();
-	yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+	studentAttendanceDate.value = localDate;
+	const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
 	const previousDate = new Date(yesterdayDate.getTime() - yesterdayDate.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 	fetch(`${ url }/zAttendance/${ previousDate }`, { method: "DELETE" })
 }, 600000);
