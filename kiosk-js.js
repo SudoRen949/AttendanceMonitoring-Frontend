@@ -32,6 +32,7 @@ async function updateAttendanceRecords()
 {
 	if ( subjectSelect.value == "null" ) {
 		attendanceRecords.innerText = "0";
+		QRBox.innerHTML = "QR code will appear here";
 		return;
 	}
 	recordsList.innerHTML = previousRecordList;
@@ -39,6 +40,7 @@ async function updateAttendanceRecords()
 	const result = await fetch(`${ url }/zAttendance/${ studentAttendanceDate.value }/${ sectionSelect.value }/${ subjectSelect.value }`);
 	if ( result.status != 200 ) {
 		attendanceRecords.innerText = "0";
+		QRBox.innerHTML = "QR code will appear here";
 		return;
 	}
 	const data = await result.text();
@@ -77,7 +79,10 @@ async function updateScheduleList()
 {
 	scheduleList.innerHTML = "";
 	const result = await fetch(`${ url }/${ sectionSelect.value }`);
-	if ( result.status != 200 ) return;
+	if ( result.status != 200 ) {
+		QRBox.innerHTML = "QR code will appear here";
+		return;
+	}
 	const data = await result.json();
 	QRBox.innerHTML = "QR code will appear here";
 	if ( data ) {
@@ -155,13 +160,11 @@ sectionSelect.addEventListener("change", () =>
 subjectSelect.addEventListener("change", () =>
 {
 	changeQRInformation();
-	QRBox.innerHTML = "QR code will appear here";
 });
 
 studentAttendanceDate.addEventListener("change", () =>
 {
 	changeQRInformation();
-	QRBox.innerHTML = "QR code will appear here";
 });
 
 // Shows realtime student record and system date and time.
