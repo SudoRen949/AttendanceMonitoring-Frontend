@@ -30,14 +30,13 @@ function updateDateAndTime()
 
 async function updateAttendanceRecords()
 {
+	let recordsLength = 0;
 	if ( subjectSelect.value == "null" ) return;
 	recordsList.innerHTML = previousRecordList;
 	previousRecordList = "";
 	const result = await fetch(`${ url }/zAttendance/${ studentAttendanceDate.value }/${ sectionSelect.value }/${ subjectSelect.value }`);
 	if ( result.status != 200 ) return;
 	const data = await result.text();
-	let recordsLength = 0;
-	// recordsList.innerHTML = null;
 	recordListUnformatted = "";
 	if ( Object.keys(data).length > 0 ) {
 		const newData = data.split(',');
