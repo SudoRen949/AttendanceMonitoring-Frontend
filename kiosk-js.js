@@ -58,7 +58,7 @@ async function updateAttendanceRecords()
 			for ( let j = 0; j < newData.length; ++j ) {
 				const dat = newData[j].split('-');
 				const dl = dat.length;
-				if ( dat[0][0] != letters[0] || previousRecordList.includes(dat[0]) ) continue;
+				if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 				previousRecordList += `
 					<tr>
 						<td>${ dat[0] }</td>
