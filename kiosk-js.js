@@ -58,6 +58,7 @@ async function updateAttendanceRecords()
 		for ( var d of newData ) {
 			const dat = d.split('-');
 			const dl = dat.length;
+			if ( previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
 				<tr>
 					<td>${ dat[0] }</td>
