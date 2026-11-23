@@ -4,6 +4,8 @@ let previousRecordList = null;
 let recordListUnformatted = "";
 let randomNumber = 0;
 let selectedSection, selectedSubject;
+let nameLists = [];
+let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const url = "https://amsys-3.vercel.app/api";
 
@@ -48,6 +50,11 @@ async function updateAttendanceRecords()
 	let recordsLength = 0;
 	if ( Object.keys(data).length > 0 ) {
 		const newData = data.split(',');
+		newData.sort((a,b) => {
+			const nameA = a.split('-')[0];
+			const nameB = b.split('-')[0];
+			return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
+		});
 		for ( var d of newData ) {
 			const dat = d.split('-');
 			const dl = dat.length;
