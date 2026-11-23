@@ -1,12 +1,11 @@
 // Webapp
 
 let previousRecordList = null;
-let recordListUnformatted = "";
+let recordListUnformatted = '';
 let randomNumber = 0;
 let selectedSection, selectedSubject;
-let nameLists = [];
-let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const url = "https://amsys-3.vercel.app/api";
 
 console.log("Hello World");
@@ -50,33 +49,31 @@ async function updateAttendanceRecords()
 	let recordsLength = 0;
 	if ( Object.keys(data).length > 0 ) {
 		const newData = data.split(',');
-		newData.sort((a,b) => {
-			const nameA = a.split('-')[0];
-			const nameB = b.split('-')[0];
-			return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
-		});
-		for ( var d of newData ) {
-			const dat = d.split('-');
-			const dl = dat.length;
-			if ( previousRecordList.includes(dat[0]) ) continue;
-			previousRecordList += `
-				<tr>
-					<td>${ dat[0] }</td>
-					<td>${ dat[1] }</td>
-					<td>${ sectionSelect.value }</td>
-					<td>${ subjectSelect.value }</td>
-					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
-					<td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
-					<td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
-				</tr>
-			`;
-			const 	timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx',
-					timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
-			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2;
-			if ( recordsLength != newData.length - 1 ) {
-				recordListUnformatted += ',';
+		// newData.sort((a,b) => {
+		// 	const nameA = a.split('-')[0];
+		// 	const nameB = b.split('-')[0];
+		// 	return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
+		// });
+		for ( let i = 0; i < letters.length; ++i ) {
+			for ( let j = 0; j < newData.length; ++j ) {
+				const dat = newData[j].split('-');
+				const dl = dat.length;
+				if ( dat[0][0] != letters[0] || previousRecordList.includes(dat[0]) ) continue;
+				previousRecordList += `
+					<tr>
+						<td>${ dat[0] }</td>
+						<td>${ dat[1] }</td>
+						<td>${ sectionSelect.value }</td>
+						<td>${ subjectSelect.value }</td>
+						<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
+						<td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
+						<td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
+					</tr>
+				`;
+				const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
+				recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2 + ',';
+				recordsLength++;
 			}
-			recordsLength++;
 		}
 	}
 	// previousRecordList = recordsList.innerHTML;
@@ -141,7 +138,7 @@ async function generateQRCode()
 			body: recordListUnformatted
 		});
 	}
-	recordListUnformatted = "";
+	// recordListUnformatted = "";
 }
 
 async function changeQRInformation()
