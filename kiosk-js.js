@@ -20,9 +20,9 @@ const sectionSelected = document.getElementById("sectionSelected");
 const attendanceRecordsCount = document.getElementById("attendanceRecords");
 const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
-const localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+//let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
-studentAttendanceDate.value = localDate;
+//studentAttendanceDate.value = localDate;
 
 // Methods --------------------------------------------------------------------------------------------------------------------
 
@@ -148,6 +148,12 @@ studentAttendanceDate.value = localDate;
 // 	}
 // }
 
+function updateDateAndTime()
+{
+	let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+	studentAttendanceDate.value = localDate;
+}
+
 // Events --------------------------------------------------------------------------------------------------------------------
 
 sectionSelect.addEventListener("change", async () =>
@@ -160,7 +166,6 @@ sectionSelect.addEventListener("change", async () =>
 	const result = await fetch(`${url}/${sectionSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load subjects for the specified section. \nerr_status: ${result.status}`);
 	const data = await result.json();
-	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	Object.entries(data).forEach(([key, value]) => {
 		let scheduleTime = "";
 		const schedule = value.split(" | ");
@@ -192,8 +197,8 @@ subjectSelect.addEventListener("change", async () =>
 	QRBox.innerHTML = "QR code will be generated here.";
 	if ( sectionSelect.value == "null" ) return;
 	// display student attendance list first
-	recordsList.innerHTML = previousRecordList;
-	previousRecordList = "";
+	// recordsList.innerHTML = previousRecordList;
+	// previousRecordList = "";
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
 	const data = await result.text();
@@ -223,8 +228,10 @@ subjectSelect.addEventListener("change", async () =>
 			recordsLength++;
 		}
 	}
+	recordsList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
 	// generate qr-code
+	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	if ( recordListUnformatted.length == 0 ) return;
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
 	if ( response.status != 200 ) return;
@@ -261,7 +268,7 @@ subjectSelect.addEventListener("change", async () =>
 // setInterval(() =>
 // {
 // 	updateDateAndTime();
-// 	// Deletes previous attendance ( necessary to prevent unused data to be stuck )
+// 	Deletes previous attendance ( necessary to prevent unused data to be stuck )
 // 	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 // 	studentAttendanceDate.value = localDate;
 // 	const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
@@ -269,7 +276,9 @@ subjectSelect.addEventListener("change", async () =>
 // 	fetch(`${ url }/zAttendance/${ previousDate }`, { method: "DELETE" })
 // }, 600000);
 
+setInterval(updateDateAndTime, 600000);
+
 // One time call --------------------------------------------------------------------------------------------------------------
 
-// updateDateAndTime();
+updateDateAndTime();
 
