@@ -17,7 +17,7 @@ const sectionSelect = document.getElementById("sectionSelect");
 const subjectSelect = document.getElementById("subjectSelect");
 const attendanceDate = document.getElementById("attendanceDate");
 const sectionSelected = document.getElementById("sectionSelected");
-const attendanceRecords = document.getElementById("attendanceRecords");
+const attendanceRecordsCount = document.getElementById("attendanceRecords");
 const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
 const localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
@@ -119,7 +119,7 @@ studentAttendanceDate.value = localDate;
 
 // async function generateQRCode()
 // {
-// 	// if ( recordListUnformatted.length == 0 ) return;
+// 	if ( recordListUnformatted.length == 0 ) return;
 // 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${ randomNumber }`);
 // 	if ( response.status != 200 ) return;
 // 	const data = await response.text();
@@ -155,6 +155,7 @@ sectionSelect.addEventListener("change", async () =>
 	// updateScheduleList();
 	// sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
 	scheduleList.innerHTML = '';
+	subjectSelect.value = "null";
 	QRBox.innerHTML = "QR code will be generated here.";
 	const result = await fetch(`${url}/${sectionSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load subjects for the specified section. \nerr_status: ${result.status}`);
@@ -184,15 +185,63 @@ sectionSelect.addEventListener("change", async () =>
 	});
 });
 
-subjectSelect.addEventListener("change", () =>
+subjectSelect.addEventListener("change", async () =>
 {
 	// changeQRInformation();
+	attendanceRecordsCount.innerText = 0;
+	QRBox.innerHTML = "QR code will be generated here.";
+	if ( sectionSelect.value == "null" ) return;
+	// display student attendance list first
+	recordsList.innerHTML = previousRecordList;
+	previousRecordList = "";
+	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
+	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
+	const data = await result.text();
+	recordListUnformatted = "";
+	let recordsLength = 0;
+	if ( data.length == 0 ) return;
+	const newData = data.split(',');
+	for ( let i = 0; i < letters.length; ++i ) {
+		for ( let j = 0; j < newData.length; ++j ) {
+			const dat = newData[j].split('-');
+			const dl = dat.length;
+			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
+			previousRecordList += `
+				<tr>
+					<td>${ dat[0] }</td>
+					<td>${ dat[1] }</td>
+					<td>${ sectionSelect.value }</td>
+					<td>${ subjectSelect.value }</td>
+					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
+					<td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
+					<td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
+				</tr>
+			`;
+			const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
+			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
+			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2;
+			recordsLength++;
+		}
+	}
+	attendanceRecords.innerText = recordsLength;
+	// generate qr-code
+	if ( recordListUnformatted.length == 0 ) return;
+	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
+	if ( response.status != 200 ) return;
+	const data = await response.text();
+	if ( data.length == 0 ) return;
+	QRBox.innerHTML = data;
+	await fetch(`${ url }/zQRInformation`, {
+		method: "PUT",
+		headers: { "Content-Type": "text/plain" },
+		body: recordListUnformatted
+	});
 });
 
-studentAttendanceDate.addEventListener("change", () =>
-{
-	// changeQRInformation();
-});
+// studentAttendanceDate.addEventListener("change", () =>
+// {
+// 	changeQRInformation();
+// });
 
 // Intervals -----------------------------------------------------------------------------------------------------------------
 
