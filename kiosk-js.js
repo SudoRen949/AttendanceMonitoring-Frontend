@@ -18,7 +18,7 @@ const subjectSelect = document.getElementById("subjectSelect");
 const attendanceDate = document.getElementById("attendanceDate");
 const sectionSelected = document.getElementById("sectionSelected");
 const attendanceRecordsCount = document.getElementById("attendanceRecords");
-const studentAttendanceDate = document.getElementById("studentAttendanceDate");
+// const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
 //let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
@@ -151,7 +151,7 @@ const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 function updateDateAndTime()
 {
 	let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-	attendanceDate.value = localDate;
+	attendanceDate.innerText = localDate;
 }
 
 // Events --------------------------------------------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ subjectSelect.addEventListener("change", async () =>
 	// display student attendance list first
 	// recordsList.innerHTML = previousRecordList;
 	// previousRecordList = "";
-	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
+	const result = await fetch(`${url}/zAttendance/${attendanceDate.textContent}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
 	const data = await result.text();
 	recordListUnformatted = "";
