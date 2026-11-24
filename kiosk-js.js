@@ -1,8 +1,8 @@
 // Webapp
 
-let previousRecordList = null;
-let recordListUnformatted = '';
 let randomNumber = 0;
+let previousRecordList = "";
+let recordListUnformatted = "";
 let selectedSection, selectedSubject;
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -20,7 +20,7 @@ const sectionSelected = document.getElementById("sectionSelected");
 const attendanceRecordsCount = document.getElementById("attendanceRecords");
 // const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
-//let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+const localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
 //studentAttendanceDate.value = localDate;
 
@@ -150,8 +150,8 @@ const attendanceRecordsCount = document.getElementById("attendanceRecords");
 
 function updateDateAndTime()
 {
-	let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-	attendanceDate.innerText = localDate;
+	// let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+	attendanceDate.innerText = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toDateString();
 }
 
 // Events --------------------------------------------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ subjectSelect.addEventListener("change", async () =>
 	// display student attendance list first
 	// recordsList.innerHTML = previousRecordList;
 	// previousRecordList = "";
-	const result = await fetch(`${url}/zAttendance/${attendanceDate.textContent}/${sectionSelect.value}/${subjectSelect.value}`);
+	const result = await fetch(`${url}/zAttendance/${localDate}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
 	const data = await result.text();
 	recordListUnformatted = "";
