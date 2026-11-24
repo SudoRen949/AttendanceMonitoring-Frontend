@@ -157,7 +157,10 @@ sectionSelect.addEventListener("change", async (e) =>
 	scheduleList.innerHTML = '';
 	QRBox.innerHTML = "QR code will be generated here.";
 	const result = await fetch(`${url}/${e.value}`);
-	if ( !result.ok ) throw new Error(`Unable to load subjects for the specified section. \nerr_status: ${result.status}`);
+	if ( !result.ok ) {
+		console.error("Unable to load subjects for the specified section. \nerr_status: ${result.status}");
+		return;
+	}
 	const data = await result.json();
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	Object.entries(data).forEach(([key, value]) => {
