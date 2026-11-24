@@ -151,7 +151,7 @@ const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 function updateDateAndTime()
 {
 	let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-	studentAttendanceDate.value = localDate;
+	attendanceDate.value = localDate;
 }
 
 // Events --------------------------------------------------------------------------------------------------------------------
