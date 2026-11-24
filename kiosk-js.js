@@ -80,7 +80,7 @@ async function updateAttendanceRecords()
 		}
 	}
 	// previousRecordList = recordsList.innerHTML;
-	console.log(recordListUnformatted);
+	// console.log(recordListUnformatted);
 	attendanceRecords.innerText = recordsLength;
 }
 
