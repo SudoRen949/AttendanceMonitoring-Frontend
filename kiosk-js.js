@@ -228,9 +228,9 @@ subjectSelect.addEventListener("change", async () =>
 	if ( recordListUnformatted.length == 0 ) return;
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
 	if ( response.status != 200 ) return;
-	const data = await response.text();
-	if ( data.length == 0 ) return;
-	QRBox.innerHTML = data;
+	const QRData = await response.text();
+	if ( QRData.length == 0 ) return;
+	QRBox.innerHTML = QRData;
 	await fetch(`${ url }/zQRInformation`, {
 		method: "PUT",
 		headers: { "Content-Type": "text/plain" },
