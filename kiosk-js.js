@@ -71,12 +71,16 @@ async function updateAttendanceRecords()
 					</tr>
 				`;
 				const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
-				recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2 + ',';
+				if ( !recordListUnformatted.isEmpty() ) {
+					recordListUnformatted += ',';
+				}
+				recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2;
 				recordsLength++;
 			}
 		}
 	}
 	// previousRecordList = recordsList.innerHTML;
+	console.log(recordListUnformatted);
 	attendanceRecords.innerText = recordsLength;
 }
 
