@@ -150,17 +150,14 @@ studentAttendanceDate.value = localDate;
 
 // Events --------------------------------------------------------------------------------------------------------------------
 
-sectionSelect.addEventListener("change", async (e) =>
+sectionSelect.addEventListener("change", async () =>
 {
 	// updateScheduleList();
 	// sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
 	scheduleList.innerHTML = '';
 	QRBox.innerHTML = "QR code will be generated here.";
-	const result = await fetch(`${url}/${e.value}`);
-	if ( !result.ok ) {
-		console.error("Unable to load subjects for the specified section. \nerr_status: ${result.status}");
-		return;
-	}
+	const result = await fetch(`${url}/${sectionSelect.value}`);
+	if ( !result.ok ) throw new Error(`Unable to load subjects for the specified section. \nerr_status: ${result.status}`);
 	const data = await result.json();
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	Object.entries(data).forEach(([key, value]) => {
