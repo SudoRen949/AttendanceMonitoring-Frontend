@@ -198,7 +198,7 @@ subjectSelect.addEventListener("change", async () =>
 	if ( sectionSelect.value == "null" ) return;
 	// display student attendance list first
 	// recordsList.innerHTML = previousRecordList;
-	// previousRecordList = "";
+	previousRecordList = "";
 	const result = await fetch(`${url}/zAttendance/${localDate}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
 	const data = await result.text();
