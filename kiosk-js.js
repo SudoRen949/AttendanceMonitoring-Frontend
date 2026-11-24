@@ -163,6 +163,7 @@ sectionSelect.addEventListener("change", async () =>
 	scheduleList.innerHTML = '';
 	subjectSelect.value = "null";
 	QRBox.innerHTML = "QR code will be generated here.";
+	sectionSelected.innerText = ( sectionSelect.value == "null" ) ? "N/A" : sectionSelect.value;
 	const result = await fetch(`${url}/${sectionSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load subjects for the specified section. \nerr_status: ${result.status}`);
 	const data = await result.json();
