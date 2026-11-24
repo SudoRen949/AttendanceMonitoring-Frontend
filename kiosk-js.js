@@ -197,8 +197,8 @@ subjectSelect.addEventListener("change", async () =>
 	QRBox.innerHTML = "QR code will be generated here.";
 	if ( sectionSelect.value == "null" ) return;
 	// display student attendance list first
-	// recordsList.innerHTML = previousRecordList;
 	previousRecordList = "";
+	recordsList.innerHTML = "";
 	const result = await fetch(`${url}/zAttendance/${localDate}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
 	const data = await result.text();
