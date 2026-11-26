@@ -91,7 +91,7 @@ async function loadAttendanceList()
 			recordsLength++;
 		}
 	}
-	recordListUnformatted += `CPE-${ sectionSelect.value }` + '-';
+	recordListUnformatted += `-CPE-${ sectionSelect.value }` + '-';
 	recordsList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
 }
