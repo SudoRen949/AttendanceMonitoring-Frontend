@@ -176,25 +176,25 @@ async function loadAttendanceList()
 	for ( let i = 0; i < letters.length; ++i ) {
 		for ( let j = 0; j < enrolledStudent.length; ++j ) {
 			const dat = enrolledStudent[j].split('-');
-			// const dl = dat.length;
-			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
+			if ( dat[0][0] != letters[i] ) continue;
 			for ( let k = 0; k < newData.length; ++k ) {
 				const dat2 = newData[k].split('-');
+				if ( previousRecordList.includes(dat2[0]) ) continue;
 				previousRecordList += `
 					<tr>
 						<td>${ dat[0] }</td>
 						<td>${ dat[1] }</td>
 						<td>${ sectionSelect.value }</td>
 						<td>${ subjectSelect.value }</td>
-						<td>${ ( dat[0] == newData[k][0] ) ? dat2[2].split('|')[1] : "--" } ${ ( dat[0] == newData[k][0] ) ? dat2[2].split('|')[2] : "--" }</td>
-						<td class="${ ( dat[0] == newData[k][0] ) ? "present" : "absent" }">${ ( dat[0] == newData[k][0] ) ? "&#10004;" : "&#10005;" }</td>
+						<td>${ ( dat2[0] == dat[0] ) ? dat2[2].split('|')[1] : "--" } ${ ( dat2[0] == dat[0] ) ? dat2[2].split('|')[2] : "--" }</td>
+						<td class="${ ( dat2[0] == dat[0] ) ? "present" : "absent" }">${ ( dat2[0] == dat[0] ) ? "&#10004;" : "&#10005;" }</td>
 					</tr>
 				`;
 				// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
 				// <td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
 				// const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
-				const aa = ( dat[0] == newData[k][0] ) ? dat2[0].split('|')[1] : "--";
-				const bb = ( dat[0] == newData[k][0] ) ? dat2[0].split('|')[2] : "--";
+				const aa = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[1] : "--";
+				const bb = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[2] : "--";
 				if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
 				recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
 				recordsLength++;
