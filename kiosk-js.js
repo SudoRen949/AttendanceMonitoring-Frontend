@@ -176,7 +176,7 @@ async function loadAttendanceList()
 	for ( let i = 0; i < letters.length; ++i ) {
 		for ( let j = 0; j < enrolledStudent.length; ++j ) {
 			const dat = enrolledStudent[j].split('-');
-			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat2[0]) ) continue;
+			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
 				<tr>
 					<td>${ dat[0] }</td>
