@@ -192,7 +192,7 @@ async function loadListAndQR()
 	}
 	attendanceRecords.innerText = recordsLength;
 	// generate qr-code
-	if ( recordListUnformatted.length == 0 || QRBox.innerHTML.length != 0 ) return;
+	if ( recordListUnformatted.length == 0 || QRBox.innerHTML.length != 28 ) return;
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
 	if ( response.status != 200 ) return;
