@@ -248,8 +248,16 @@ subjectSelect.addEventListener("change", async () =>
 {
 	recordsList.innerHTML = "";
 	attendanceRecordsCount.innerText = 0;
+});
+
+// Schedules -----------------------------------------------------------------------------------------------------------------
+
+setInterval(async () =>
+{
+	loadSections();
+	loadAttendanceList();
 	// generate qr-code
-	if ( recordListUnformatted.length == 0 ) return;
+	if ( recordListUnformatted.length == 0 || QRBox.innerHTML != "" ) return;
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
 	if ( response.status != 200 ) return;
@@ -261,14 +269,6 @@ subjectSelect.addEventListener("change", async () =>
 		headers: { "Content-Type": "text/plain" },
 		body: recordListUnformatted
 	});
-});
-
-// Schedules -----------------------------------------------------------------------------------------------------------------
-
-setInterval(() =>
-{
-	loadSections();
-	loadAttendanceList();
 }, 2000);
 
 setInterval(() =>
