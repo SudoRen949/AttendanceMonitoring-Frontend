@@ -18,11 +18,11 @@ const subjectSelect = document.getElementById("subjectSelect");
 const attendanceDate = document.getElementById("attendanceDate");
 const sectionSelected = document.getElementById("sectionSelected");
 const attendanceRecordsCount = document.getElementById("attendanceRecords");
-// const studentAttendanceDate = document.getElementById("studentAttendanceDate");
+const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
 const localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
-//studentAttendanceDate.value = localDate;
+studentAttendanceDate.value = localDate;
 
 // Methods --------------------------------------------------------------------------------------------------------------------
 
@@ -150,20 +150,69 @@ const localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset()
 
 function updateDateAndTime()
 {
-	// let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 	attendanceDate.innerText = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toDateString();
 }
 
-// Events --------------------------------------------------------------------------------------------------------------------
-
-sectionSelect.addEventListener("change", async () =>
+async function loadListAndQR()
 {
-	// updateScheduleList();
-	// sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
-	scheduleList.innerHTML = '';
+	attendanceRecordsCount.innerText = 0;
+	QRBox.innerHTML = "QR code will appear here";
+	if ( sectionSelect.value == "null" || subjectSelect.value == "null" ) return;
+	// display student attendance list first
+	recordsList.innerHTML = previousRecordList;
+	previousRecordList = "";
+	recordListUnformatted = "";
+	let recordsLength = 0;
+	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
+	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
+	const data = await result.text();
+	if ( data.length == 0 ) return;
+	const newData = data.split(',');
+	for ( let i = 0; i < letters.length; ++i ) {
+		for ( let j = 0; j < newData.length; ++j ) {
+			const dat = newData[j].split('-');
+			const dl = dat.length;
+			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
+			previousRecordList += `
+				<tr>
+					<td>${ dat[0] }</td>
+					<td>${ dat[1] }</td>
+					<td>${ sectionSelect.value }</td>
+					<td>${ subjectSelect.value }</td>
+					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
+					<td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
+					<td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
+				</tr>
+			`;
+			const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
+			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
+			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2;
+			recordsLength++;
+		}
+	}
+	attendanceRecords.innerText = recordsLength;
+	// generate qr-code
+	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
+	if ( recordListUnformatted.length == 0 ) return;
+	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
+	if ( response.status != 200 ) return;
+	const QRData = await response.text();
+	if ( QRData.length == 0 ) return;
+	QRBox.innerHTML = QRData;
+	await fetch(`${ url }/zQRInformation`, {
+		method: "PUT",
+		headers: { "Content-Type": "text/plain" },
+		body: recordListUnformatted
+	});
+}
+
+async function loadSections()
+{
+	scheduleList.innerHTML = "";
 	subjectSelect.value = "null";
-	QRBox.innerHTML = "QR code will be generated here.";
+	QRBox.innerHTML = "QR code will appear here";
 	sectionSelected.innerText = ( sectionSelect.value == "null" ) ? "N/A" : sectionSelect.value;
+	if ( sectionSelect.value == "null" ) return;
 	const result = await fetch(`${url}/${sectionSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load subjects for the specified section. \nerr_status: ${result.status}`);
 	const data = await result.json();
@@ -189,62 +238,20 @@ sectionSelect.addEventListener("change", async () =>
 			</div>
 		`;
 	});
-});
+}
 
-subjectSelect.addEventListener("change", async () =>
-{
-	// changeQRInformation();
-	attendanceRecordsCount.innerText = 0;
-	QRBox.innerHTML = "QR code will be generated here.";
-	if ( sectionSelect.value == "null" ) return;
-	// display student attendance list first
-	previousRecordList = "";
-	recordsList.innerHTML = "";
-	const result = await fetch(`${url}/zAttendance/${localDate}/${sectionSelect.value}/${subjectSelect.value}`);
-	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
-	const data = await result.text();
-	recordListUnformatted = "";
-	let recordsLength = 0;
-	if ( data.length == 0 ) return;
-	const newData = data.split(',');
-	for ( let i = 0; i < letters.length; ++i ) {
-		for ( let j = 0; j < newData.length; ++j ) {
-			const dat = newData[j].split('-');
-			const dl = dat.length;
-			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
-			previousRecordList += `
-				<tr>
-					<td>${ dat[0] }</td>
-					<td>${ dat[1] }</td>
-					<td>${ sectionSelect.value }</td>
-					<td>${ subjectSelect.value }</td>
-					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
-					<td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
-					<td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
-				</tr>
-			`;
-			const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
-			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
-			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2;
-			recordsLength++;
-		}
-	}
-	recordsList.innerHTML = previousRecordList;
-	attendanceRecords.innerText = recordsLength;
-	// generate qr-code
-	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
-	if ( recordListUnformatted.length == 0 ) return;
-	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
-	if ( response.status != 200 ) return;
-	const QRData = await response.text();
-	if ( QRData.length == 0 ) return;
-	QRBox.innerHTML = QRData;
-	await fetch(`${ url }/zQRInformation`, {
-		method: "PUT",
-		headers: { "Content-Type": "text/plain" },
-		body: recordListUnformatted
-	});
-});
+// Events --------------------------------------------------------------------------------------------------------------------
+
+// sectionSelect.addEventListener("change", async () =>
+// {
+// 	updateScheduleList();
+// 	sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
+// });
+
+// subjectSelect.addEventListener("change", () =>
+// {
+// 	changeQRInformation();
+// });
 
 // studentAttendanceDate.addEventListener("change", () =>
 // {
@@ -253,23 +260,16 @@ subjectSelect.addEventListener("change", async () =>
 
 // Intervals -----------------------------------------------------------------------------------------------------------------
 
-// setInterval(() =>
-// {
-// 	// Shows realtime student record and system date and time. it has a delay of 2 seconds to give it a time to populate the firebase database and receive data.
-// 	updateAttendanceRecords();
-// 	if ( sectionSelect.value != "null" && 
-// 		 subjectSelect.value != "null" && 
-// 		 scheduleList.textContent.length > 0 &&
-// 		 recordsList.textContent.length > 0 )
-// 	{
-// 		generateQRCode();
-// 	}
-// }, 1000);
+setInterval(() =>
+{
+	// updateAttendanceRecords();
+	loadSections();
+	loadListAndQR();
+}, 1000);
 
 // setInterval(() =>
 // {
 // 	updateDateAndTime();
-// 	Deletes previous attendance ( necessary to prevent unused data to be stuck )
 // 	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 // 	studentAttendanceDate.value = localDate;
 // 	const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
@@ -277,7 +277,12 @@ subjectSelect.addEventListener("change", async () =>
 // 	fetch(`${ url }/zAttendance/${ previousDate }`, { method: "DELETE" })
 // }, 600000);
 
-setInterval(updateDateAndTime, 600000);
+setInterval(() =>
+{
+	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+	studentAttendanceDate.value = localDate;
+	updateDateAndTime();
+}, 30 * 1000);
 
 // One time call --------------------------------------------------------------------------------------------------------------
 
