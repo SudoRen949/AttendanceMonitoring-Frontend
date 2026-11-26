@@ -85,7 +85,7 @@ async function loadAttendanceList()
 async function loadSections()
 {
 	let schedules = "";
-	sectionSelected.innerText = ( sectionSelect.vae == "" ) ? "N/A" : sectionSelect.value;
+	sectionSelected.innerText = ( sectionSelect.value == "" ) ? "N/A" : sectionSelect.value;
 	if ( sectionSelect.value == "" ) return;
 	const result = await fetch(`${url}/${sectionSelect.value}`);
 	if ( !result.ok ) return;
