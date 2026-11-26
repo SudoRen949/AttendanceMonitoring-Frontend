@@ -175,8 +175,8 @@ async function loadAttendanceList()
 		}
 	}
 	for ( let i = 0; i < letters.length; ++i ) {
-		for ( let j = 0; j < enrolledStudent.length; ++j ) {
-			const dat = enrolledStudent[j].split('-');
+		for ( let j = 0; j < newData.length; ++j ) {
+			const dat = newData[j].split('-');
 			if ( dat[0][0] != letters[i] ) continue;
 			previousRecordList += `
 				<tr>
@@ -193,7 +193,7 @@ async function loadAttendanceList()
 			// if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
 			// recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
 			// recordsLength++;
-			
+
 			// for ( let k = 0; k < newData.length; ++k ) {
 			// 	const dat = newData[k].split('-');
 			// 	if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
