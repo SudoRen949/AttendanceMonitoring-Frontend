@@ -186,12 +186,19 @@ async function loadAttendanceList()
 			`;
 			for ( let nd of newData ) {
 				const dat2 = nd.split('-');
-				if ( dat2[0] != dat[0] ) continue;
-				previousRecordList += `
-						<td>${ ( dat2[0] == dat[0] ) ? dat2[2].split('|')[1] : "--" } ${ ( dat2[0] == dat[0] ) ? dat2[2].split('|')[2] : "--" }</td>
-						<td class="${ ( dat2[0] == dat[0] ) ? "present" : "absent" }">${ ( dat2[0] == dat[0] ) ? "&#10004;" : "&#10005;" }</td>
-					</tr>
-				`;
+				if ( dat2[0] != dat[0] ) {
+					previousRecordList += `
+							<td>-- --</td>
+							<td class="absent">&#10005;</td>
+						</tr>
+					`;
+				} else {
+					previousRecordList += `
+							<td>${ dat2[2].split('|')[1] } ${ dat2[2].split('|')[2] }</td>
+							<td class="present">&#10004;</td>
+						</tr>
+					`;
+				}
 			}
 			// for ( let k = 0; k < newData.length; ++k ) {
 			// 	const dat2 = newData[k].split('-');
