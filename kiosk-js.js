@@ -162,7 +162,7 @@ async function loadAttendanceList()
 	const d = await r.text();
 	if ( d.length == 0 ) return;
 	const enrolledStudent = d.split(',');
-	for ( int i = 0; i < enrolledStudent.length; ++i ) {
+	for ( let i = 0; i < enrolledStudent.length; ++i ) {
 		student = enrolledStudent[i].split('-');
 	}
 	// display student attendance list first
