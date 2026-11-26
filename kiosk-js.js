@@ -121,12 +121,12 @@ async function loadSections()
 sectionSelect.addEventListener("change", async () =>
 {
 	scheduleList.innerText = "Your class schedule will appear here.";
-	recordsList.innerText = "Student attendance record can be viewed here.";
+	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
 });
 
 subjectSelect.addEventListener("change", async () =>
 {
-	recordsList.innerText = "Student attendance record can be viewed here.";
+	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
 });
 
 // Schedules -----------------------------------------------------------------------------------------------------------------
