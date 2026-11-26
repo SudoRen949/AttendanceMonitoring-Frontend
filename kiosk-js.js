@@ -183,10 +183,11 @@ async function loadAttendanceList()
 					<td>${ dat[1] }</td>
 					<td>${ sectionSelect.value }</td>
 					<td>${ subjectSelect.value }</td>
-					<td>${ dat2[2].split('|')[1] } ${ dat2[2].split('|')[2] }</td>
+					<td>-- --</td>
 					<td class="present">&#10004;</td>
 				</tr>
 			`;
+			// ${ dat2[2].split('|')[1] } ${ dat2[2].split('|')[2] }
 			// for ( let k = 0; k < newData.length; ++k ) {
 			// 	const dat2 = newData[k].split('-');
 			// 	if ( previousRecordList.includes(dat2[0]) ) continue;
