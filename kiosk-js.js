@@ -10,6 +10,7 @@ const url = "https://amsys-3.vercel.app/api";
 console.log("BUY ME A NESCAFE! ;D");
 
 const QRBox = document.getElementById("qrBox");
+const pinLoginForm = document.getElementById("pinLoginForm");
 const recordsList = document.getElementById("recordsList");
 const scheduleList = document.getElementById("scheduleList");
 const sectionSelect = document.getElementById("sectionSelect");
@@ -139,6 +140,27 @@ subjectSelect.addEventListener("change", async () =>
 {
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
 });
+
+pinLoginForm.addEventListener("submit", async (e) =>
+{
+	e.preventDefault();
+	const pin = document.getElementById("pinInput").value;
+	const errorMessage = document.getElementById("loginError");
+	errorMessage.hidden = true;
+	try {
+		const response = await fetch(`${url}/login`, {
+			method: "POST",
+			headers: { "Content-Type": "text/plain" },
+			body: pin
+		});
+		if ( !response.ok ) throw new Error("Invalid PIN. Please try again.");
+		document.getElementById("loginScreen").hidden = true;
+		document.getElementById("dashboard").hidden = false;
+	} catch (error) {
+		errorMessage.textContent = error.message || "Login failed. Please try again.";
+		errorMessage.hidden = false;
+	}
+})
 
 // Schedules -----------------------------------------------------------------------------------------------------------------
 
