@@ -185,8 +185,8 @@ async function loadAttendanceList()
 					<td>${ dat[1] }</td>
 					<td>${ sectionSelect.value }</td>
 					<td>${ subjectSelect.value }</td>
-					<td>${ ( dat.includes("Time") ) ? dat[2].split('|')[1] : "--" } ${ ( dat.includes("Time") ) ? dat[2].split('|')[2] : "--" }</td>
-					<td class="${ ( dat.includes("Time") ) ? "present" : "absent" }">${ ( dat.includes("Time") ) ? "&#10004;" : "&#10005;" }</td>
+					<td>${ ( dat.length > 1 ) ? dat[2].split('|')[1] : "--" } ${ ( dat.length > 1 ) ? dat[2].split('|')[2] : "--" }</td>
+					<td class="${ ( dat.length > 1 ) ? "present" : "absent" }">${ ( dat.length > 1 ) ? "&#10004;" : "&#10005;" }</td>
 				</tr>
 			`;
 			// const aa = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[1] : "--";
