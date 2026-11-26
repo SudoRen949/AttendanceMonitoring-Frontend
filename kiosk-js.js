@@ -43,9 +43,9 @@ async function loadAttendanceList()
 	recordListUnformatted = "";
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) {
-		recordsList.innerHTML = "";
 		QRBox.innerText = "";
 		attendanceRecordsCount.innerText = 0;
+		recordsList.innerHTML = "<tr><td>Empty</td></tr>";
 		return;
 	}
 	const data = await result.text();
