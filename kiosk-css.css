@@ -361,3 +361,9 @@ tbody tr:last-child td { border-bottom: 0; }
 .login-screen[hidden] {
     display: none !important;
 }
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}

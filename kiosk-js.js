@@ -10,9 +10,10 @@ const url = "https://amsys-3.vercel.app/api";
 console.log("BUY ME A NESCAFE! ;D");
 
 const QRBox = document.getElementById("qrBox");
-const pinLoginForm = document.getElementById("pinLoginForm");
 const recordsList = document.getElementById("recordsList");
 const scheduleList = document.getElementById("scheduleList");
+const pinLoginForm = document.getElementById("pinLoginForm");
+const logoutButton = document.getElementById("logoutButton");
 const sectionSelect = document.getElementById("sectionSelect");
 const subjectSelect = document.getElementById("subjectSelect");
 const attendanceDate = document.getElementById("attendanceDate");
@@ -160,6 +161,12 @@ pinLoginForm.addEventListener("submit", async (e) =>
 		errorMessage.textContent = error.message || "Login failed. Please try again.";
 		errorMessage.hidden = false;
 	}
+});
+
+logoutButton.addEventListener("click", () =>
+{
+	document.getElementById("loginScreen").hidden = false;
+	document.getElementById("dashboard").hidden = true;
 })
 
 // Schedules -----------------------------------------------------------------------------------------------------------------
