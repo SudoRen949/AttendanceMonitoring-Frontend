@@ -160,6 +160,8 @@ async function loadAttendanceList()
 	if ( !r.ok ) return;
 	const d = await r.text();
 	if ( d.length == 0 ) return;
+	const enrolledStudent = d.split(',');
+	//
 	recordListUnformatted = "";
 	let previousRecordList = "", recordsLength = 0;
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
