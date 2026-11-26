@@ -176,7 +176,7 @@ async function loadAttendanceList()
 	}
 	for ( let i = 0; i < letters.length; ++i ) {
 		for ( let j = 0; j < newData.length; ++j ) {
-			const dat = newData[j].split('-');;
+			const dat = newData[j].split('-');
 			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
 				<tr>
@@ -188,44 +188,11 @@ async function loadAttendanceList()
 					<td class="${ ( dat.length > 2 ) ? "present" : "absent" }">${ ( dat.length > 2 ) ? "&#10004;" : "&#10005;" }</td>
 				</tr>
 			`;
-			// const aa = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[1] : "--";
-			// const bb = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[2] : "--";
-			// if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
-			// recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
-			// recordsLength++;
-
-			// for ( let k = 0; k < newData.length; ++k ) {
-			// 	const dat = newData[k].split('-');
-			// 	if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
-			// 	previousRecordList += `
-			// 		<tr>
-			// 			<td>${ dat[0] }</td>
-			// 			<td>${ dat[1] }</td>
-			// 			<td>${ sectionSelect.value }</td>
-			// 			<td>${ subjectSelect.value }</td>
-			// 			<td>${  }</td>
-			// 			<td class="present">&#10004;</td>
-			// 		</tr>
-			// 	`;
-			// }
-			// ${ dat2[2].split('|')[1] } ${ dat2[2].split('|')[2] }
-			// for ( let k = 0; k < newData.length; ++k ) {
-			// 	const dat2 = newData[k].split('-');
-			// 	if ( previousRecordList.includes(dat2[0]) ) continue;
-			// 	previousRecordList += `
-			// 		<tr>
-			// 			<td>${ dat[0] }</td>
-			// 			<td>${ dat[1] }</td>
-			// 			<td>${ sectionSelect.value }</td>
-			// 			<td>${ subjectSelect.value }</td>
-			// 			<td>${ ( dat2[0] == dat[0] ) ? dat2[2].split('|')[1] : "--" } ${ ( dat2[0] == dat[0] ) ? dat2[2].split('|')[2] : "--" }</td>
-			// 			<td class="${ ( dat2[0] == dat[0] ) ? "present" : "absent" }">${ ( dat2[0] == dat[0] ) ? "&#10004;" : "&#10005;" }</td>
-			// 		</tr>
-			// 	`;
-			// 	// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
-			// 	// <td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
-			// 	// const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
-			// }
+			const aa = ( dat.length > 2 ) ? dat[2].split('|')[1] : "--";
+			const bb = ( dat.length > 2 ) ? dat[2].split('|')[2] : "--";
+			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
+			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
+			recordsLength++;
 		}
 	}
 	recordsList.innerHTML = previousRecordList;
