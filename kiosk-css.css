@@ -289,3 +289,6 @@ tbody tr:last-child td { border-bottom: 0; }
 	header h1 { font-size: 18px; }
 }
 
+.hide {
+	display: none;
+}
