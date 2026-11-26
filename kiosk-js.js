@@ -211,6 +211,7 @@ async function loadSections()
 	// scheduleList.innerHTML = "";
 	// subjectSelect.value = "null";
 	// QRBox.innerHTML = "QR code will appear here";
+	let schedules = "";
 	sectionSelected.innerText = ( sectionSelect.value == "null" ) ? "N/A" : sectionSelect.value;
 	if ( sectionSelect.value == "null" ) return;
 	const result = await fetch(`${url}/${sectionSelect.value}`);
@@ -231,13 +232,14 @@ async function loadSections()
 			let room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 			scheduleTime += ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + room + "<br/>";
 		}
-		scheduleList.innerHTML += `
+		schedules += `
 			<div class="schedule-item">
 				<div><strong>${key.toUpperCase()}</strong><small>${schedule[schedule.length-1]}</small></div>
 				<div class="schedule-time">${scheduleTime}</div>
 			</div>
 		`;
 	});
+	scheduleList.innerHTML = schedules;
 }
 
 // Events --------------------------------------------------------------------------------------------------------------------
@@ -245,7 +247,7 @@ async function loadSections()
 sectionSelect.addEventListener("change", async () =>
 {
 	// updateScheduleList();
-	sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
+	// sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
 	scheduleList.innerHTML = "";
 });
 
