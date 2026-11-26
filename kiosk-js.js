@@ -179,13 +179,13 @@ async function loadAttendanceList()
 			const dl = dat.length;
 			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
-				<tr class="${ ( dat[0] == student[0] ) ? "present" : "absent" }">
+				<tr>
 					<td>${ dat[0] }</td>
 					<td>${ dat[1] }</td>
 					<td>${ sectionSelect.value }</td>
 					<td>${ subjectSelect.value }</td>
 					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
-					<td>${ ( dat[0] == student[0] ) ? "&#10003;" : "&#10005;" }</td>
+					<td class="${ ( dat[0] == student[0] ) ? "present" : "absent" }">${ ( dat[0] == student[0] ) ? "&#10003;" : "&#10005;" }</td>
 				</tr>
 			`;
 			// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
@@ -212,6 +212,7 @@ async function loadSections()
 	if ( !result.ok ) return;
 	const data = await result.json();
 	Object.entries(data).forEach(([key, value]) => {
+		if ( key == "zNames" ) return;
 		let scheduleTime = "";
 		const schedule = value.split(" | ");
 		const days = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
