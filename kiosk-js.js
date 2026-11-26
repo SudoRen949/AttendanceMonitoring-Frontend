@@ -186,7 +186,7 @@ async function loadListAndQR()
 			recordsLength++;
 		}
 	}
-	recordList.innerHTML = previousRecordList;
+	recordsList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
 	// generate qr-code
 	if ( recordListUnformatted.length == 0 ) return;
