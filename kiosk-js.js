@@ -156,15 +156,15 @@ async function loadAttendanceList()
 {
 	if ( sectionSelect.value == "" && subjectSelect.value == "" ) return;
 	// load enrolled students
-	let enrolledStudents = "", student;
 	const r = await fetch(`${url}/${sectionSelect.value}/zNames`);
 	if ( !r.ok ) return;
 	const d = await r.text();
 	if ( d.length == 0 ) return;
+	let student;
 	const enrolledStudent = d.split(',');
-	for ( let i = 0; i < enrolledStudent.length; ++i ) {
-		student = enrolledStudent[i].split('-');
-	}
+	// for ( var e of enrolledStudent ) {
+	// 	student = e.split('-');
+	// }
 	// display student attendance list first
 	recordListUnformatted = "";
 	let previousRecordList = "", recordsLength = 0;
@@ -174,20 +174,22 @@ async function loadAttendanceList()
 	if ( data.length == 0 ) return;
 	const newData = data.split(',');
 	for ( let i = 0; i < letters.length; ++i ) {
-		for ( let j = 0; j < newData.length; ++j ) {
-			const dat = newData[j].split('-');
-			const dl = dat.length;
+		for ( let j = 0; j < enrolledStudent.length; ++j ) {
+			const dat = enrolledStudent[j].split('-');
+			// const dl = dat.length;
 			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
-			previousRecordList += `
-				<tr>
-					<td>${ dat[0] }</td>
-					<td>${ dat[1] }</td>
-					<td>${ sectionSelect.value }</td>
-					<td>${ subjectSelect.value }</td>
-					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
-					<td class="${ ( dat[0] == student[0] ) ? "present" : "absent" }">${ ( dat[0] == student[0] ) ? "&#10003;" : "&#10005;" }</td>
-				</tr>
-			`;
+			for ( let k = 0; k < newData.length; ++k ) {
+				previousRecordList += `
+					<tr>
+						<td>${ dat[0] }</td>
+						<td>${ dat[1] }</td>
+						<td>${ sectionSelect.value }</td>
+						<td>${ subjectSelect.value }</td>
+						<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
+						<td class="${ ( dat[0] == newData[k][0] ) ? "present" : "absent" }">${ ( dat[0] == newData[k][0] ) ? "&#10004;" : "&#10005;" }</td>
+					</tr>
+				`;
+			}
 			// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
 			// <td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
 			// const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
