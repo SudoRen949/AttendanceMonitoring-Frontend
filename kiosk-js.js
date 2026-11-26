@@ -152,7 +152,7 @@ function updateDateAndTime()
 	attendanceDate.innerText = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toDateString();
 }
 
-async function loadListAndQR()
+async function loadAttendanceList()
 {
 	if ( sectionSelect.value == "null" && subjectSelect.value == "null" ) return;
 	// display student attendance list first
@@ -176,13 +176,13 @@ async function loadListAndQR()
 					<td>${ sectionSelect.value }</td>
 					<td>${ subjectSelect.value }</td>
 					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
-					<td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
-					<td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
 				</tr>
 			`;
-			const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
+			// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
+			// <td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
+			// const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
 			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
-			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Timed In:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2] + '-' + 'Timed Out:-' + timedOutData1 + ' ' + timedOutData2;
+			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2];
 			recordsLength++;
 		}
 	}
@@ -256,7 +256,7 @@ subjectSelect.addEventListener("change", async () =>
 setInterval(() =>
 {
 	loadSections();
-	loadListAndQR();
+	loadAttendanceList();
 }, 2000);
 
 // setInterval(() =>
