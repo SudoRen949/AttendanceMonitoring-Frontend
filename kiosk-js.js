@@ -30,24 +30,35 @@ function updateDateAndTime()
 	attendanceDate.innerText = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toDateString();
 }
 
+function clearThings()
+{
+	QRBox.innerText = "";
+	attendanceRecordsCount.innerText = 0;
+	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
+}
+
 async function loadAttendanceList()
 {
 	if ( sectionSelect.value == "" || subjectSelect.value == "" ) {
-		QRBox.innerText = "";
-		attendanceRecordsCount.innerText = 0;
-		recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
+		clearThings();
 		return;
 	}
 	// load enrolled students
 	const r = await fetch(`${url}/${sectionSelect.value}/zNames`);
-	if ( !r.ok ) return;
+	if ( !r.ok ) {
+		clearThings();
+		return;
+	}
 	const d = await r.text();
 	if ( d.length == 0 ) return;
 	const enrolledStudent = d.split(',');
 	// load student attendance
 	recordListUnformatted = "";
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
-	if ( !result.ok ) return
+	if ( !result.ok ) {
+		clearThings();
+		return;
+	}
 	const data = await result.text();
 	if ( data.length == 0 ) return;
 	let previousRecordList = "", recordsLength = 0;
