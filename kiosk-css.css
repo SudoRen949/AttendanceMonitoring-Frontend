@@ -292,3 +292,11 @@ tbody tr:last-child td { border-bottom: 0; }
 .hide {
 	display: none;
 }
+
+.present {
+	background-color: #76ff7a;
+}
+
+.absent {
+	background-color: #fa8072;
+}
