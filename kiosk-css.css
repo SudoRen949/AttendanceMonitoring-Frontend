@@ -357,3 +357,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .login-error {
     color: #b42318 !important;
 }
+
+.login-screen[hidden] {
+    display: none !important;
+}
