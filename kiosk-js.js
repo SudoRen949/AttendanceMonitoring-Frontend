@@ -179,7 +179,7 @@ async function loadAttendanceList()
 			const dl = dat.length;
 			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
-				<tr>
+				<tr class="${ ( dat[0] == student[0] ) ? "present" : "absent" }">
 					<td>${ dat[0] }</td>
 					<td>${ dat[1] }</td>
 					<td>${ sectionSelect.value }</td>
