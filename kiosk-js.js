@@ -233,7 +233,7 @@ sectionSelect.addEventListener("change", async () =>
 	scheduleList.innerHTML = "";
 });
 
-subjectSelect.addEventListener("change", () =>
+subjectSelect.addEventListener("change", async () =>
 {
 	attendanceRecordsCount.innerText = 0;
 	// generate qr-code
