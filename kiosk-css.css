@@ -294,9 +294,9 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 
 .present {
-	color: #99ff99;
+	color: #00ff00;
 }
 
 .absent {
-	color: #ff9999;
+	color: #ff0000;
 }
