@@ -160,12 +160,6 @@ async function loadAttendanceList()
 	if ( !r.ok ) return;
 	const d = await r.text();
 	if ( d.length == 0 ) return;
-	let student;
-	const enrolledStudent = d.split(',');
-	// for ( var e of enrolledStudent ) {
-	// 	student = e.split('-');
-	// }
-	// display student attendance list first
 	recordListUnformatted = "";
 	let previousRecordList = "", recordsLength = 0;
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
@@ -173,20 +167,39 @@ async function loadAttendanceList()
 	const data = await result.text();
 	if ( data.length == 0 ) return;
 	const newData = data.split(',');
+	for ( let es of enrolledStudent ) {
+		if ( !newData.includes(es) ) {
+			newData.push(es)
+		}
+	}
 	for ( let i = 0; i < letters.length; ++i ) {
 		for ( let j = 0; j < enrolledStudent.length; ++j ) {
+			if ( dat[0][0] != letters[i] ) continue;
 			const dat = enrolledStudent[j].split('-');
-			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
 				<tr>
 					<td>${ dat[0] }</td>
 					<td>${ dat[1] }</td>
 					<td>${ sectionSelect.value }</td>
 					<td>${ subjectSelect.value }</td>
-					<td>-- --</td>
-					<td class="present">&#10004;</td>
+					<td>${ ( dat.includes("Time") ) ? dat[2].split('|')[1] : "--" } ${ ( dat.includes("Time") ) ? dat[2].split('|')[2] : "--" }</td>
+					<td class="${ ( dat.includes("Time") ) ? "present" : "absent" }">${ ( dat.includes("Time") ) ? "&#10004;" : "&#10005;" }</td>
 				</tr>
 			`;
+			// for ( let k = 0; k < newData.length; ++k ) {
+			// 	const dat = newData[k].split('-');
+			// 	if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
+			// 	previousRecordList += `
+			// 		<tr>
+			// 			<td>${ dat[0] }</td>
+			// 			<td>${ dat[1] }</td>
+			// 			<td>${ sectionSelect.value }</td>
+			// 			<td>${ subjectSelect.value }</td>
+			// 			<td>${  }</td>
+			// 			<td class="present">&#10004;</td>
+			// 		</tr>
+			// 	`;
+			// }
 			// ${ dat2[2].split('|')[1] } ${ dat2[2].split('|')[2] }
 			// for ( let k = 0; k < newData.length; ++k ) {
 			// 	const dat2 = newData[k].split('-');
@@ -258,10 +271,12 @@ async function loadSections()
 sectionSelect.addEventListener("change", async () =>
 {
 	scheduleList.innerHTML = "";
+	recordsList.innerHTML = "";
 });
 
 subjectSelect.addEventListener("change", async () =>
 {
+	recordsList.innerHTML = "";
 	attendanceRecordsCount.innerText = 0;
 	// generate qr-code
 	if ( recordListUnformatted.length == 0 ) return;
