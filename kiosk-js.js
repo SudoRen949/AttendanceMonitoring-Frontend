@@ -176,8 +176,7 @@ async function loadAttendanceList()
 	}
 	for ( let i = 0; i < letters.length; ++i ) {
 		for ( let j = 0; j < newData.length; ++j ) {
-			const dat = newData[j].split('-');
-			console.log(dat);
+			const dat = newData[j].split('-');;
 			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
 				<tr>
@@ -185,8 +184,8 @@ async function loadAttendanceList()
 					<td>${ dat[1] }</td>
 					<td>${ sectionSelect.value }</td>
 					<td>${ subjectSelect.value }</td>
-					<td>${ ( dat.length > 1 ) ? dat[2].split('|')[1] : "--" } ${ ( dat.length > 1 ) ? dat[2].split('|')[2] : "--" }</td>
-					<td class="${ ( dat.length > 1 ) ? "present" : "absent" }">${ ( dat.length > 1 ) ? "&#10004;" : "&#10005;" }</td>
+					<td>${ ( dat.length > 2 ) ? dat[2].split('|')[1] : "--" } ${ ( dat.length > 2 ) ? dat[2].split('|')[2] : "--" }</td>
+					<td class="${ ( dat.length > 2 ) ? "present" : "absent" }">${ ( dat.length > 2 ) ? "&#10004;" : "&#10005;" }</td>
 				</tr>
 			`;
 			// const aa = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[1] : "--";
