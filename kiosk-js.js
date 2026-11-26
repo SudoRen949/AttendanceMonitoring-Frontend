@@ -179,13 +179,14 @@ async function loadAttendanceList()
 			// const dl = dat.length;
 			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			for ( let k = 0; k < newData.length; ++k ) {
+				const dat2 = newData[k].split('-');
 				previousRecordList += `
 					<tr>
 						<td>${ dat[0] }</td>
 						<td>${ dat[1] }</td>
 						<td>${ sectionSelect.value }</td>
 						<td>${ subjectSelect.value }</td>
-						<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
+						<td>${ ( dat[0] == newData[k][0] ) ? dat2[2].split('|')[1] : "--" } ${ ( dat[0] == newData[k][0] ) ? dat2[2].split('|')[2] : "--" }</td>
 						<td class="${ ( dat[0] == newData[k][0] ) ? "present" : "absent" }">${ ( dat[0] == newData[k][0] ) ? "&#10004;" : "&#10005;" }</td>
 					</tr>
 				`;
