@@ -188,19 +188,6 @@ async function loadListAndQR()
 	}
 	recordsList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
-	// generate qr-code
-	if ( recordListUnformatted.length == 0 ) return;
-	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
-	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
-	if ( response.status != 200 ) return;
-	const QRData = await response.text();
-	if ( QRData.length == 0 ) return;
-	QRBox.innerHTML = QRData;
-	await fetch(`${ url }/zQRInformation`, {
-		method: "PUT",
-		headers: { "Content-Type": "text/plain" },
-		body: recordListUnformatted
-	});
 }
 
 async function loadSections()
@@ -249,6 +236,19 @@ sectionSelect.addEventListener("change", async () =>
 subjectSelect.addEventListener("change", () =>
 {
 	attendanceRecordsCount.innerText = 0;
+	// generate qr-code
+	if ( recordListUnformatted.length == 0 ) return;
+	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
+	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
+	if ( response.status != 200 ) return;
+	const QRData = await response.text();
+	if ( QRData.length == 0 ) return;
+	QRBox.innerHTML = QRData;
+	await fetch(`${ url }/zQRInformation`, {
+		method: "PUT",
+		headers: { "Content-Type": "text/plain" },
+		body: recordListUnformatted
+	});
 });
 
 // Schedules -----------------------------------------------------------------------------------------------------------------
