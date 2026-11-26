@@ -186,6 +186,7 @@ async function loadAttendanceList()
 			`;
 			for ( let nd of newData ) {
 				const dat2 = nd.split('-');
+				if ( previousRecordList.includes(dat2[0]) ) continue;
 				if ( dat2[0] != dat[0] ) {
 					previousRecordList += `
 							<td>-- --</td>
