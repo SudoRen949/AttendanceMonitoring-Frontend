@@ -190,13 +190,15 @@ async function loadAttendanceList()
 						<td class="${ ( dat[0] == newData[k][0] ) ? "present" : "absent" }">${ ( dat[0] == newData[k][0] ) ? "&#10004;" : "&#10005;" }</td>
 					</tr>
 				`;
+				// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
+				// <td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
+				// const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
+				const aa = ( dat[0] == newData[k][0] ) ? dat2[0].split('|')[1] : "--";
+				const bb = ( dat[0] == newData[k][0] ) ? dat2[0].split('|')[2] : "--";
+				if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
+				recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
+				recordsLength++;
 			}
-			// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
-			// <td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
-			// const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
-			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
-			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + dat[2].split('|')[1] + ' ' + dat[2].split('|')[2];
-			recordsLength++;
 		}
 	}
 	recordsList.innerHTML = previousRecordList;
