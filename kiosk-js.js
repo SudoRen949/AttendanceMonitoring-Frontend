@@ -154,13 +154,22 @@ function updateDateAndTime()
 
 async function loadAttendanceList()
 {
-	if ( sectionSelect.value == "null" && subjectSelect.value == "null" ) return;
+	if ( sectionSelect.value == "" && subjectSelect.value == "" ) return;
+	// load enrolled students
+	let enrolledStudents = "", student;
+	const r = await fetch(`${url}/${sectionSelect.value}/zNames`);
+	if ( !r.ok ) return;
+	const d = await r.text();
+	if ( d.length == 0 ) return;
+	const enrolledStudent = d.split(',');
+	for ( int i = 0; i < enrolledStudent.length; ++i ) {
+		student = enrolledStudent[i].split('-');
+	}
 	// display student attendance list first
-	let previousRecordList = "";
-	let recordsLength = 0;
 	recordListUnformatted = "";
+	let previousRecordList = "", recordsLength = 0;
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
-	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
+	if ( !result.ok ) return;
 	const data = await result.text();
 	if ( data.length == 0 ) return;
 	const newData = data.split(',');
@@ -176,6 +185,7 @@ async function loadAttendanceList()
 					<td>${ sectionSelect.value }</td>
 					<td>${ subjectSelect.value }</td>
 					<td>${ dat[2].split('|')[1] } ${ dat[2].split('|')[2] }</td>
+					<td>${ ( dat[0] == student[0] ) ? "&#10003;" : "&#10005;" }</td>
 				</tr>
 			`;
 			// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
@@ -196,10 +206,10 @@ async function loadSections()
 	// subjectSelect.value = "null";
 	// QRBox.innerHTML = "QR code will appear here";
 	let schedules = "";
-	sectionSelected.innerText = ( sectionSelect.value == "null" ) ? "N/A" : sectionSelect.value;
-	if ( sectionSelect.value == "null" ) return;
+	sectionSelected.innerText = ( sectionSelect.value == "" ) ? "N/A" : sectionSelect.value;
+	if ( sectionSelect.value == "" ) return;
 	const result = await fetch(`${url}/${sectionSelect.value}`);
-	if ( !result.ok ) throw new Error(`Unable to load subjects for the specified section. \nerr_status: ${result.status}`);
+	if ( !result.ok ) return;
 	const data = await result.json();
 	Object.entries(data).forEach(([key, value]) => {
 		let scheduleTime = "";
@@ -259,6 +269,13 @@ setInterval(() =>
 	loadAttendanceList();
 }, 2000);
 
+setInterval(() =>
+{
+	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+	studentAttendanceDate.value = localDate;
+	updateDateAndTime();
+}, 30 * 1000);
+
 // setInterval(() =>
 // {
 // 	updateDateAndTime();
@@ -268,13 +285,6 @@ setInterval(() =>
 // 	const previousDate = new Date(yesterdayDate.getTime() - yesterdayDate.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 // 	fetch(`${ url }/zAttendance/${ previousDate }`, { method: "DELETE" })
 // }, 600000);
-
-setInterval(() =>
-{
-	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-	studentAttendanceDate.value = localDate;
-	updateDateAndTime();
-}, 30 * 1000);
 
 // Callbacks --------------------------------------------------------------------------------------------------------------
 
