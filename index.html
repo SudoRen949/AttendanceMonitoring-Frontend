@@ -8,8 +8,31 @@
 		<script src="kiosk-js.js" defer></script>
 	</head>
 	<body>
+		<section id="loginScreen" class="login-screen">
+			<form id="pinLoginForm" class="login-card">
+				<h1>Teacher Login</h1>
+				<p>Enter your PIN to view the attendance dashboard.</p>
+
+				<label for="pinInput">PIN</label>
+				<input
+					id="pinInput"
+					name="pin"
+					type="password"
+					inputmode="numeric"
+					pattern="[0-9]*"
+					autocomplete="current-password"
+					maxlength="12"
+					required
+					autofocus
+				>
+
+				<button type="submit">Log in</button>
+				<p id="loginError" class="login-error" role="alert" hidden></p>
+			</form>
+		</section>
+
 		<div>
-			<main>
+			<main id="dashboard" hidden>
 				<header>
 					<div>
 						<h1>Attendance Dashboard</h1>
