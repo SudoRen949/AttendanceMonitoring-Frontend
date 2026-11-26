@@ -167,6 +167,7 @@ logoutButton.addEventListener("click", () =>
 {
 	document.getElementById("loginScreen").hidden = false;
 	document.getElementById("dashboard").hidden = true;
+	document.getElementById("pinInput").value = '';
 })
 
 // Schedules -----------------------------------------------------------------------------------------------------------------
