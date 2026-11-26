@@ -176,8 +176,8 @@ async function loadAttendanceList()
 	}
 	for ( let i = 0; i < letters.length; ++i ) {
 		for ( let j = 0; j < enrolledStudent.length; ++j ) {
-			if ( dat[0][0] != letters[i] ) continue;
 			const dat = enrolledStudent[j].split('-');
+			if ( dat[0][0] != letters[i] ) continue;
 			previousRecordList += `
 				<tr>
 					<td>${ dat[0] }</td>
@@ -188,6 +188,12 @@ async function loadAttendanceList()
 					<td class="${ ( dat.includes("Time") ) ? "present" : "absent" }">${ ( dat.includes("Time") ) ? "&#10004;" : "&#10005;" }</td>
 				</tr>
 			`;
+			// const aa = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[1] : "--";
+			// const bb = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[2] : "--";
+			// if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
+			// recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
+			// recordsLength++;
+			
 			// for ( let k = 0; k < newData.length; ++k ) {
 			// 	const dat = newData[k].split('-');
 			// 	if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
@@ -219,11 +225,6 @@ async function loadAttendanceList()
 			// 	// <td>${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : '--' } ${ ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : '--' }</td>
 			// 	// <td><span class="${ ( dl > 3 && dat[3] ) ? 'status' : 'status open' }">${ ( dl > 3 && dat[3] ) ? 'Complete' : 'Time-out pending' }</span></td>
 			// 	// const timedOutData1 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[1] : 'xx', timedOutData2 = ( dl > 3 && dat[3] ) ? dat[3].split('|')[2] : 'xx';
-			// 	const aa = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[1] : "--";
-			// 	const bb = ( dat2[0] == dat[0] ) ? dat2[0].split('|')[2] : "--";
-			// 	if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
-			// 	recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
-			// 	recordsLength++;
 			// }
 		}
 	}
