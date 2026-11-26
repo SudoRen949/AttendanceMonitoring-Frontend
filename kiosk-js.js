@@ -163,11 +163,15 @@ async function loadAttendanceList()
 	const enrolledStudent = d.split(',');
 	//
 	recordListUnformatted = "";
-	let previousRecordList = "", recordsLength = 0;
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
-	if ( !result.ok ) return;
+	if ( !result.ok ) {
+		recordsList.innerHTML = "";
+		attendanceRecordsCount.innerText = 0;
+		return;
+	}
 	const data = await result.text();
 	if ( data.length == 0 ) return;
+	let previousRecordList = "", recordsLength = 0;
 	const newData = data.split(',');
 	for ( let es of enrolledStudent ) {
 		if ( !newData.includes(es) ) {
@@ -246,8 +250,7 @@ sectionSelect.addEventListener("change", async () =>
 
 subjectSelect.addEventListener("change", async () =>
 {
-	recordsList.innerHTML = "";
-	attendanceRecordsCount.innerText = 0;
+	// ...
 });
 
 // Schedules -----------------------------------------------------------------------------------------------------------------
