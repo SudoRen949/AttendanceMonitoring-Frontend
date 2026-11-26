@@ -1,7 +1,6 @@
 // Webapp
 
 let randomNumber = 0;
-let previousRecordList = "";
 let recordListUnformatted = "";
 let selectedSection, selectedSubject;
 
@@ -155,14 +154,11 @@ function updateDateAndTime()
 
 async function loadListAndQR()
 {
-	attendanceRecordsCount.innerText = 0;
-	QRBox.innerHTML = "QR code will appear here";
-	if ( sectionSelect.value == "null" || subjectSelect.value == "null" ) return;
+	if ( sectionSelect.value == "null" && subjectSelect.value == "null" ) return;
 	// display student attendance list first
-	recordsList.innerHTML = previousRecordList;
-	previousRecordList = "";
-	recordListUnformatted = "";
+	let previousRecordList = "";
 	let recordsLength = 0;
+	recordListUnformatted = "";
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) throw new Error(`Unable to load attendance list. \nerr_status: ${result.status}`);
 	const data = await result.text();
@@ -190,9 +186,10 @@ async function loadListAndQR()
 			recordsLength++;
 		}
 	}
+	recordList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
 	// generate qr-code
-	if ( recordListUnformatted.length == 0 || QRBox.innerHTML.length != 24 ) return;
+	if ( recordListUnformatted.length == 0 ) return;
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
 	if ( response.status != 200 ) return;
@@ -246,29 +243,21 @@ async function loadSections()
 
 sectionSelect.addEventListener("change", async () =>
 {
-	// updateScheduleList();
-	// sectionSelected.innerText = ( sectionSelect.value != "null" ) ? sectionSelect.value : "";
 	scheduleList.innerHTML = "";
 });
 
-// subjectSelect.addEventListener("change", () =>
-// {
-// 	changeQRInformation();
-// });
+subjectSelect.addEventListener("change", () =>
+{
+	attendanceRecordsCount.innerText = 0;
+});
 
-// studentAttendanceDate.addEventListener("change", () =>
-// {
-// 	changeQRInformation();
-// });
-
-// Intervals -----------------------------------------------------------------------------------------------------------------
+// Schedules -----------------------------------------------------------------------------------------------------------------
 
 setInterval(() =>
 {
-	// updateAttendanceRecords();
 	loadSections();
 	loadListAndQR();
-}, 1000);
+}, 2000);
 
 // setInterval(() =>
 // {
@@ -287,7 +276,7 @@ setInterval(() =>
 	updateDateAndTime();
 }, 30 * 1000);
 
-// One time call --------------------------------------------------------------------------------------------------------------
+// Callbacks --------------------------------------------------------------------------------------------------------------
 
 updateDateAndTime();
 
