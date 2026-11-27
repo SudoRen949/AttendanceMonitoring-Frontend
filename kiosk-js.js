@@ -113,6 +113,7 @@ async function loadSections()
 	const [ month, day, year ] = studentAttendanceDate.value.split('-').map(Number);
 	const date = new Date(year, month - 1, day);
 	const formattedDate = new Intl.DateTimeFormat("en-PH", { weekday: 'long' }).format(date);
+	console.log(studentAttendanceDate.value);
 	console.log(formattedDate);
 	Object.entries(data).forEach(([key, value]) => {
 		if ( key == "zNames" ) return;
