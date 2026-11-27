@@ -65,6 +65,7 @@ async function loadAttendanceList()
 	const result = await fetch(`${url}/zAttendance/${studentAttendanceDate.value}/${sectionSelect.value}/${subjectSelect.value}`);
 	if ( !result.ok ) {
 		clearThings();
+		clearRecordedList();
 		return;
 	}
 	const data = await result.text();
