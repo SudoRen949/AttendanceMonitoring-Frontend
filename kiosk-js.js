@@ -107,11 +107,8 @@ async function loadSections()
 	const result = await fetch(`${url}/${sectionSelect.value}`);
 	if ( !result.ok ) return;
 	const data = await result.json();
-	const date = new Date(
-		studentAttendanceDate.value.split('-')[0],
-		studentAttendanceDate.value.split('-')[1],
-		studentAttendanceDate.value.split('-')[2]
-	);
+	const [ month, day, year ] = studentAttendanceDate.value.split('-').map(Number);
+	const date = new Date(year, month - 1, day);
 	const formattedDate = new Intl.DateTimeFormat("en-PH", { weekday: 'long' }).format(date);
 	console.log(formattedDate);
 	Object.entries(data).forEach(([key, value]) => {
