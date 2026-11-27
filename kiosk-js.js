@@ -5,7 +5,7 @@ let selectedSchedule = "";
 let recordListUnformatted = "";
 let selectedSection, selectedSubject;
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //< used for sorting
 const url = "https://amsys-3.vercel.app/api";
 
 console.log("BUY ME A NESCAFE! ;D");
@@ -71,15 +71,17 @@ async function loadAttendanceList()
 	const data = await result.text();
 	if ( data.length == 0 ) return;
 	let previousRecordList = "", recordsLength = 0;
+	let markArray = [];
 	const newData = data.split(',');
+	// "newData" only has the student that is present, might as well add those who aren't ;D
 	for ( let es of enrolledStudent ) {
 		if ( !newData.includes(es) ) {
 			newData.push(es)
 		}
 	}
 	for ( let i = 0; i < letters.length; ++i ) {
-		for ( let j = 0; j < newData.length; ++j ) {
-			const dat = newData[j].split('-');
+		newData.forEach((nd) => {
+			const dat = nd.split('-');
 			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
 			previousRecordList += `
 				<tr>
@@ -91,14 +93,17 @@ async function loadAttendanceList()
 					<td class="${ ( dat.length > 2 ) ? "present" : "absent" }">${ ( dat.length > 2 ) ? "&#10004;" : "&#10005;" }</td>
 				</tr>
 			`;
+			// creates a new recorded list for present & absent students
 			const aa = ( dat.length > 2 ) ? dat[2].split('|')[1] : "xx";
 			const bb = ( dat.length > 2 ) ? dat[2].split('|')[2] : "xx";
 			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
 			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
 			recordsLength++;
-		}
+		});
+		// for ( let j = 0; j < newData.length; ++j ) {	
+		// }
 	}
-	recordListUnformatted += `,CPE_${ sectionSelect.value },` + 'Computer Engineering Office,' + `${ subjectSelect.value },` + `${ studentAttendanceDate.value.replaceAll('-','/') },` + `${ selectedSchedule }`;
+	recordListUnformatted += `,CPE_${ sectionSelect.value },` + 'Computer Engineering Office,' + `${ subjectSelect.value },` + `${ selectedSchedule }`;
 	recordsList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
 }
