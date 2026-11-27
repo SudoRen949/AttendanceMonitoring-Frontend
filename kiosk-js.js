@@ -90,8 +90,8 @@ async function loadAttendanceList()
 					<td class="${ ( dat.length > 2 ) ? "present" : "absent" }">${ ( dat.length > 2 ) ? "&#10004;" : "&#10005;" }</td>
 				</tr>
 			`;
-			const aa = ( dat.length > 2 ) ? dat[2].split('|')[1] : "--";
-			const bb = ( dat.length > 2 ) ? dat[2].split('|')[2] : "--";
+			const aa = ( dat.length > 2 ) ? dat[2].split('|')[1] : "xx";
+			const bb = ( dat.length > 2 ) ? dat[2].split('|')[2] : "xx";
 			if ( recordListUnformatted.length != 0 ) recordListUnformatted += ',';
 			recordListUnformatted += dat[0] + '-' + dat[1] + '-' + sectionSelect.value + '-' + subjectSelect.value + '-' + `Time:-` + aa + ' ' + bb;
 			recordsLength++;
