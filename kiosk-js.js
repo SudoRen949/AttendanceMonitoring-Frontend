@@ -1,6 +1,7 @@
 // Webapp
 
 let randomNumber = 0;
+let selectedSchedule = "";
 let recordListUnformatted = "";
 let selectedSection, selectedSubject;
 
@@ -93,7 +94,7 @@ async function loadAttendanceList()
 			recordsLength++;
 		}
 	}
-	recordListUnformatted += `-CPE_${ sectionSelect.value }` + '-';
+	recordListUnformatted += `-CPE_${ sectionSelect.value }-` + 'Computer Engineering Office-' + `${ subjectSelect.value }-` + `${ studentAttendanceDate.value }-` + `${ selectedSchedule }`;
 	recordsList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
 }
@@ -106,6 +107,8 @@ async function loadSections()
 	const result = await fetch(`${url}/${sectionSelect.value}`);
 	if ( !result.ok ) return;
 	const data = await result.json();
+	const date = new Date();
+	const formattedDate = new Intl.DateTimeFormat("en-US", { weekday: 'long' }).format(date);
 	Object.entries(data).forEach(([key, value]) => {
 		if ( key == "zNames" ) return;
 		let scheduleTime = "";
@@ -116,6 +119,11 @@ async function loadSections()
 			for ( let j = 0; j < days.length; ++j ) {
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
 					scheduleTime += `${days[j]}`;
+					break;
+				}
+				if ( formattedDate == days[j] ) {
+					let exactRoom = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
+					selectedSchedule = ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + exactRoom;
 					break;
 				}
 			}
