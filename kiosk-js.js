@@ -24,7 +24,8 @@ const sectionSelected = document.getElementById("sectionSelected");
 const attendanceRecordsCount = document.getElementById("attendanceRecords");
 const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
-let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+let localNewDate = new Date();
+let localDate = new Date(localNewDate.getTime() - localNewDate.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
 studentAttendanceDate.value = localDate;
 
@@ -236,7 +237,8 @@ setInterval(async () =>
 
 setInterval(() =>
 {
-	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+	localNewDate = new Date()
+	localDate = new Date(localNewDate.getTime() - localNewDate.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 	studentAttendanceDate.value = localDate;
 	updateDateAndTime();
 }, 5 * 60 * 1000);
