@@ -82,7 +82,7 @@ async function loadAttendanceList()
 	for ( let i = 0; i < letters.length; ++i ) {
 		newData.forEach((nd) => {
 			const dat = nd.split('-');
-			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) continue;
+			if ( dat[0][0] != letters[i] || previousRecordList.includes(dat[0]) ) return;
 			previousRecordList += `
 				<tr>
 					<td>${ dat[0] }</td>
