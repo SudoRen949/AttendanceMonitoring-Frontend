@@ -125,7 +125,7 @@ async function loadSections()
 			for ( let j = 0; j < days.length; ++j ) {
 				if ( formattedDate == days[j] ) {
 					let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
-					selectedSchedule = `${day[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]}-` + _room;
+					selectedSchedule = `${day[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + _room;
 				}
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
 					scheduleTime += `${days[j]}`;
