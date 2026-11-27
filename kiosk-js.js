@@ -10,6 +10,8 @@ const url = "https://amsys-3.vercel.app/api";
 console.log("BUY ME A NESCAFE! ;D");
 
 const QRBox = document.getElementById("qrBox");
+const pinInput = document.getElementById("pinInput");
+const pinKeypad = document.getElementById("pinKeypad");
 const recordsList = document.getElementById("recordsList");
 const scheduleList = document.getElementById("scheduleList");
 const pinLoginForm = document.getElementById("pinLoginForm");
@@ -169,7 +171,32 @@ logoutButton.addEventListener("click", () =>
 	document.getElementById("loginScreen").hidden = false;
 	document.getElementById("dashboard").hidden = true;
 	document.getElementById("pinInput").value = '';
-})
+});
+
+pinInput.addEventListener("focus", () => {
+    pinKeypad.hidden = false;
+});
+
+pinKeypad.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-key]");
+
+    if (!button) {
+        return;
+    }
+
+    const key = button.dataset.key;
+    const maxLength = Number(pinInput.maxLength);
+
+    if (key === "clear") {
+        pinInput.value = "";
+    } else if (key === "backspace") {
+        pinInput.value = pinInput.value.slice(0, -1);
+    } else if (!maxLength || pinInput.value.length < maxLength) {
+        pinInput.value += key;
+    }
+
+    pinInput.dispatchEvent(new Event("input", { bubbles: true }));
+});
 
 // Schedules -----------------------------------------------------------------------------------------------------------------
 
