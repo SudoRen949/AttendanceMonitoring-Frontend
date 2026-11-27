@@ -97,7 +97,7 @@ async function loadAttendanceList()
 			recordsLength++;
 		}
 	}
-	recordListUnformatted += `-CPE_${ sectionSelect.value }-` + 'Computer Engineering Office-' + `${ subjectSelect.value }-` + `${ studentAttendanceDate.value.replaceAll('-','/') }-` + `${ selectedSchedule }`;
+	recordListUnformatted += `,CPE_${ sectionSelect.value },` + 'Computer Engineering Office,' + `${ subjectSelect.value },` + `${ studentAttendanceDate.value.replaceAll('-','/') },` + `${ selectedSchedule }`;
 	recordsList.innerHTML = previousRecordList;
 	attendanceRecords.innerText = recordsLength;
 }
