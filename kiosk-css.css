@@ -477,3 +477,20 @@ tbody tr:last-child td { border-bottom: 0; }
     outline: 3px solid #84adff;
     outline-offset: 2px;
 }
+
+#studentAttendanceDate {
+    min-width: 220px;
+    min-height: 52px;
+    padding: 10px 14px;
+    font-size: 18px;
+    border: 1px solid #98a2b3;
+    border-radius: 8px;
+    touch-action: manipulation;
+}
+
+#studentAttendanceDate::-webkit-calendar-picker-indicator {
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    cursor: pointer;
+}
