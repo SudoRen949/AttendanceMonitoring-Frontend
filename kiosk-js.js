@@ -179,22 +179,12 @@ pinInput.addEventListener("focus", () => {
 
 pinKeypad.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-key]");
-
-    if (!button) {
-        return;
-    }
-
+    if (!button) return
     const key = button.dataset.key;
     const maxLength = Number(pinInput.maxLength);
-
-    if (key === "clear") {
-        pinInput.value = "";
-    } else if (key === "backspace") {
-        pinInput.value = pinInput.value.slice(0, -1);
-    } else if (!maxLength || pinInput.value.length < maxLength) {
-        pinInput.value += key;
-    }
-
+    if (key === "clear") pinInput.value = "";
+    else if (key === "backspace") pinInput.value = pinInput.value.slice(0, -1);
+    else if (!maxLength || pinInput.value.length < maxLength) pinInput.value += key;
     pinInput.dispatchEvent(new Event("input", { bubbles: true }));
 });
 
