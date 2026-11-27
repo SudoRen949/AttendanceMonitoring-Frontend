@@ -213,7 +213,7 @@ setInterval(async () =>
 	loadSections();
 	loadAttendanceList();
 	// generate qr-code
-	if ( recordListUnformatted.length == 0 || QRBox.textContent != "" || attendanceRecordsCount.textContent == "0" ) return;
+	if ( QRBox.textContent != "" || attendanceRecordsCount.textContent == "0" ) return;
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
 	if ( response.status != 200 ) return;
