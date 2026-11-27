@@ -171,6 +171,10 @@ logoutButton.addEventListener("click", () =>
 	document.getElementById("loginScreen").hidden = false;
 	document.getElementById("dashboard").hidden = true;
 	document.getElementById("pinInput").value = '';
+	sectionSelect.value = "";
+	subjectSelect.value = "";
+	recordsList.innerText = "";
+	scheduleList.innerText = "";
 });
 
 pinInput.addEventListener("focus", () => {
