@@ -33,7 +33,8 @@ studentAttendanceDate.value = localDate;
 
 function updateDateAndTime()
 {
-	attendanceDate.innerText = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toDateString();
+	const newDate = new Date();
+	attendanceDate.innerText = new Date(newDate.getTime() - newDate.getTimezoneOffset() * 60000).toDateString();
 }
 
 function clearThings()
