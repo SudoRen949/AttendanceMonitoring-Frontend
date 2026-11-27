@@ -148,12 +148,14 @@ async function loadSections()
 
 sectionSelect.addEventListener("change", async () =>
 {
+	recordListUnformatted = "";
 	scheduleList.innerText = "Your class schedule will appear here.";
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
 });
 
 subjectSelect.addEventListener("change", async () =>
 {
+	recordListUnformatted = "";
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
 });
 
