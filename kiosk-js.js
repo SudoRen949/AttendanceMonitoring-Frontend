@@ -125,7 +125,7 @@ async function loadSections()
 			for ( let j = 0; j < days.length; ++j ) {
 				if ( formattedDate == days[j] ) {
 					let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
-					selectedSchedule = `${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]}-` + _room;
+					selectedSchedule = `${day[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]}-` + _room;
 				}
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
 					scheduleTime += `${days[j]}`;
@@ -227,15 +227,15 @@ setInterval(async () =>
 	if ( recordListUnformatted.length == 0 || QRBox.textContent != "" || attendanceRecordsCount.textContent == "0" ) return;
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
-	if ( response.status != 200 ) return;
-	const QRData = await response.text();
-	if ( QRData.length == 0 ) return;
-	QRBox.innerHTML = QRData;
 	await fetch(`${ url }/zQRInformation`, {
 		method: "PUT",
 		headers: { "Content-Type": "text/plain" },
 		body: recordListUnformatted
 	});
+	if ( response.status != 200 ) return;
+	const QRData = await response.text();
+	if ( QRData.length == 0 ) return;
+	QRBox.innerHTML = QRData;
 }, 2 * 1000);
 
 setInterval(() =>
