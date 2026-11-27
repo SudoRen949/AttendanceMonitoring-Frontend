@@ -146,7 +146,7 @@ async function loadSections()
 
 async function clearRecordedList()
 {
-	if ( recordListUnformatted.length == 0 ) return;
+	recordListUnformatted = "";
 	await fetch(`${ url }/zQRInformation`, {
 		method: "PUT",
 		headers: { "Content-Type": "text/plain" },
@@ -158,7 +158,6 @@ async function clearRecordedList()
 
 sectionSelect.addEventListener("change", async () =>
 {
-	recordListUnformatted = "";
 	scheduleList.innerText = "Your class schedule will appear here.";
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
 	clearRecordedList();
@@ -166,7 +165,6 @@ sectionSelect.addEventListener("change", async () =>
 
 subjectSelect.addEventListener("change", async () =>
 {
-	recordListUnformatted = "";
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
 	clearRecordedList();
 });
