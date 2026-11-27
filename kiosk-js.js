@@ -24,7 +24,7 @@ const sectionSelected = document.getElementById("sectionSelected");
 const attendanceRecordsCount = document.getElementById("attendanceRecords");
 const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
-const localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+let localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
 studentAttendanceDate.value = localDate;
 
