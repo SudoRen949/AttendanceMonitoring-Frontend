@@ -113,6 +113,7 @@ async function loadSections()
 		studentAttendanceDate.value.split('-')[2]
 	);
 	const formattedDate = new Intl.DateTimeFormat("en-US", { weekday: 'long' }).format(date);
+	console.log(formattedDate);
 	Object.entries(data).forEach(([key, value]) => {
 		if ( key == "zNames" ) return;
 		let scheduleTime = "";
@@ -121,13 +122,12 @@ async function loadSections()
 		for ( let i = 0; i < schedule.length - 1; ++i ) {
 			const scheduleData = schedule[i].split(',');
 			for ( let j = 0; j < days.length; ++j ) {
+				if ( formattedDate == days[j] ) {
+					let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
+					selectedSchedule = ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + _room;
+				}
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
 					scheduleTime += `${days[j]}`;
-					break;
-				}
-				if ( formattedDate == days[j] ) {
-					let exactRoom = ( scheduleData[6] == "NULL" ) ? "" : `Room ${scheduleData[6]}`;
-					selectedSchedule = ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + exactRoom;
 					break;
 				}
 			}
@@ -235,14 +235,14 @@ setInterval(async () =>
 		headers: { "Content-Type": "text/plain" },
 		body: recordListUnformatted
 	});
-}, 2000);
+}, 2 * 1000);
 
 setInterval(() =>
 {
 	localDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 	studentAttendanceDate.value = localDate;
 	updateDateAndTime();
-}, 30 * 1000);
+}, 5 * 60 * 1000);
 
 // Callbacks --------------------------------------------------------------------------------------------------------------
 
