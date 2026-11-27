@@ -144,6 +144,16 @@ async function loadSections()
 	scheduleList.innerHTML = schedules;
 }
 
+async function clearRecordedList()
+{
+	if ( recordListUnformatted.length == 0 ) return;
+	await fetch(`${ url }/zQRInformation`, {
+		method: "PUT",
+		headers: { "Content-Type": "text/plain" },
+		body: ""
+	});
+}
+
 // Events --------------------------------------------------------------------------------------------------------------------
 
 sectionSelect.addEventListener("change", async () =>
@@ -151,12 +161,14 @@ sectionSelect.addEventListener("change", async () =>
 	recordListUnformatted = "";
 	scheduleList.innerText = "Your class schedule will appear here.";
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
+	clearRecordedList();
 });
 
 subjectSelect.addEventListener("change", async () =>
 {
 	recordListUnformatted = "";
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
+	clearRecordedList();
 });
 
 pinLoginForm.addEventListener("submit", async (e) =>
@@ -213,7 +225,7 @@ setInterval(async () =>
 	loadSections();
 	loadAttendanceList();
 	// generate qr-code
-	if ( QRBox.textContent != "" || attendanceRecordsCount.textContent == "0" ) return;
+	if ( recordListUnformatted.length == 0 || QRBox.textContent != "" || attendanceRecordsCount.textContent == "0" ) return;
 	randomNumber = parseInt( ( Math.random() % 100 ) * 100000 );
 	const response = await fetch(`https://api.tinyqrc.com/v1/qr?data=https://amsys.wasmer.app/?id=${randomNumber}`);
 	if ( response.status != 200 ) return;
