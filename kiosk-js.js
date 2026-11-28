@@ -131,9 +131,9 @@ async function loadSections()
 			let room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 			for ( let j = 0; j < days.length; ++j ) {
 				// let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
-				if ( selectedSchedule.length > 0 ) selectedSchedule += '|';
-				selectedSchedule += `${days[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
+					if ( selectedSchedule.length > 0 ) selectedSchedule += '|';
+					selectedSchedule += `${days[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
 					scheduleTime += `${days[j]}`;
 					break;
 				}
