@@ -123,23 +123,25 @@ async function loadSections()
 	// console.log(formattedDate);
 	Object.entries(data).forEach(([key, value]) => {
 		if ( key == "zNames" ) return;
-		let scheduleTime = "";
+		let scheduleTime = "", st = "";
 		const schedule = value.split(" | ");
 		const days = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
 		for ( let i = 0; i < schedule.length - 1; ++i ) {
 			const scheduleData = schedule[i].split(',');
+			if ( selectedSchedule.length > 0 ) selectedSchedule += '|';
 			for ( let j = 0; j < days.length; ++j ) {
 				// let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
 					// if ( selectedSchedule.length > 0 ) selectedSchedule += '|';
 					// selectedSchedule += `${days[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
 					scheduleTime += `${days[j]}`;
+					selectedSchedule += `${days[j]}`;
 					break;
 				}
 			}
 			let room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 			scheduleTime += ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + room + "<br/>";
-			selectedSchedule += `${scheduleTime.split(' ')[0]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
+			selectedSchedule += ` ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
 		}
 		schedules += `
 			<div class="schedule-item">
