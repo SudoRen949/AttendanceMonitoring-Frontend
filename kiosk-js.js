@@ -137,7 +137,7 @@ async function loadSections()
 			}
 			let room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 			scheduleTime += ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + room + "<br/>";
-			if ( key == subjectSelect.value ) st += ` ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
+			if ( key == subjectSelect.value ) st += ` ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]}|` + room;
 		}
 		schedules += `
 			<div class="schedule-item">
