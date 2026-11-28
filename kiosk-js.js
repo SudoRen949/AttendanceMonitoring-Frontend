@@ -119,7 +119,7 @@ async function loadSections()
 	const [ year, month, day ] = studentAttendanceDate.value.split('-').map(Number);
 	const date = new Date(year, month - 1, day);
 	// const formattedDate = new Intl.DateTimeFormat("en-PH", { weekday: 'long' }).format(date);
-	let st = "";
+	let st = "", sn = "";
 	Object.entries(data).forEach(([key, value]) => {
 		if ( key == "zNames" ) return;
 		let scheduleTime = "";
@@ -145,9 +145,10 @@ async function loadSections()
 				<div class="schedule-time">${scheduleTime}</div>
 			</div>
 		`;
+		if ( key == subjectSelect.value ) sn = schedule[schedule.length-1];
 	});
 	scheduleList.innerHTML = schedules;
-	selectedSchedule = st + `|${schedule[schedule.length-1]}`;
+	selectedSchedule = st + `|${sn}`;
 }
 
 async function clearRecordedList()
