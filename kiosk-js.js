@@ -118,7 +118,7 @@ async function loadSections()
 	const data = await result.json();
 	const [ year, month, day ] = studentAttendanceDate.value.split('-').map(Number);
 	const date = new Date(year, month - 1, day);
-	const formattedDate = new Intl.DateTimeFormat("en-PH", { weekday: 'long' }).format(date);
+	// const formattedDate = new Intl.DateTimeFormat("en-PH", { weekday: 'long' }).format(date);
 	// console.log(studentAttendanceDate.value);
 	// console.log(formattedDate);
 	Object.entries(data).forEach(([key, value]) => {
@@ -128,17 +128,16 @@ async function loadSections()
 		const days = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
 		for ( let i = 0; i < schedule.length - 1; ++i ) {
 			const scheduleData = schedule[i].split(',');
+			let room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 			for ( let j = 0; j < days.length; ++j ) {
-				if ( formattedDate == days[j] ) {
-					let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
-					selectedSchedule = `${days[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + _room;
-				}
+				// let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
+				if ( selectedSchedule.length > 0 ) selectedSchedule += '|';
+				selectedSchedule += `${days[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
 					scheduleTime += `${days[j]}`;
 					break;
 				}
 			}
-			let room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 			scheduleTime += ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + room + "<br/>";
 		}
 		schedules += `
