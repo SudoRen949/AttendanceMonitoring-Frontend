@@ -26,6 +26,7 @@ const studentAttendanceDate = document.getElementById("studentAttendanceDate");
 
 let localNewDate = new Date();
 let localDate = new Date(localNewDate.getTime() - localNewDate.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+let automaticLogoutTimer = null;
 
 studentAttendanceDate.value = localDate;
 
@@ -43,6 +44,15 @@ function clearThings()
 	QRBox.innerText = "";
 	attendanceRecordsCount.innerText = 0;
 	recordsList.innerHTML = "<tr><td>Student attendance record can be viewed here.</td></tr>";
+}
+
+function resetTimer()
+{
+	if ( automaticLogoutTimer != null ) clearTimeout(automaticLogoutTimer);
+	automaticLogoutTimer = setTimeout(() => {
+		clearThings();
+		logoutButton.click();
+	}, 1 * 60 * 1000);
 }
 
 async function loadAttendanceList()
@@ -252,7 +262,12 @@ setInterval(() =>
 	updateDateAndTime();
 }, 5 * 60 * 1000);
 
+[ "pointerdown", "touchstart", "keydown" ].forEach((event) => {
+	document.addEventListener(event, resetTimer, { passive: true });
+});
+
 // Callbacks --------------------------------------------------------------------------------------------------------------
 
 updateDateAndTime();
+resetTimer();
 
