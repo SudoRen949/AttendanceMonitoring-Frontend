@@ -119,29 +119,25 @@ async function loadSections()
 	const [ year, month, day ] = studentAttendanceDate.value.split('-').map(Number);
 	const date = new Date(year, month - 1, day);
 	// const formattedDate = new Intl.DateTimeFormat("en-PH", { weekday: 'long' }).format(date);
-	// console.log(studentAttendanceDate.value);
-	// console.log(formattedDate);
+	let st = "";
 	Object.entries(data).forEach(([key, value]) => {
 		if ( key == "zNames" ) return;
-		let scheduleTime = "", st = "";
+		let scheduleTime = "";
 		const schedule = value.split(" | ");
 		const days = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
 		for ( let i = 0; i < schedule.length - 1; ++i ) {
 			const scheduleData = schedule[i].split(',');
-			if ( selectedSchedule.length > 0 && key == subjectSelect.value ) selectedSchedule += '|';
+			if ( st.length > 0 && key == subjectSelect.value ) st += '|';
 			for ( let j = 0; j < days.length; ++j ) {
-				// let _room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 				if ( scheduleData[0] == days[j][0] || ( j == 3 && scheduleData[0] == `${days[j][0]}${days[j][1]}` ) ) {
-					// if ( selectedSchedule.length > 0 ) selectedSchedule += '|';
-					// selectedSchedule += `${days[j]} ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]},` + room;
 					scheduleTime += `${days[j]}`;
-					if ( key == subjectSelect.value ) selectedSchedule += `${days[j]}`;
+					if ( key == subjectSelect.value ) st += `${days[j]}`;
 					break;
 				}
 			}
 			let room = ( scheduleData[6] == "NULL" ) ? '' : `Room ${scheduleData[6]}`;
 			scheduleTime += ` ${scheduleData[1]} ${scheduleData[2]} ${scheduleData[3]} ${scheduleData[4]} ${scheduleData[5]} ` + room + "<br/>";
-			if ( key == subjectSelect.value ) selectedSchedule += ` ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]} ${scheduleData[scheduleData.length-1]},` + room;
+			if ( key == subjectSelect.value ) st += ` ${scheduleData[1]} ${scheduleData[2]} to ${scheduleData[4]} ${scheduleData[5]} ${schedule[schedule.length-1]},` + room;
 		}
 		schedules += `
 			<div class="schedule-item">
@@ -151,6 +147,7 @@ async function loadSections()
 		`;
 	});
 	scheduleList.innerHTML = schedules;
+	selectedSchedule = st;
 }
 
 async function clearRecordedList()
